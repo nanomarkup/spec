@@ -20,6 +20,10 @@ Comments and formatting proposals must distinguish changes to the data model
 from changes to the presentation or document model. A presentation feature
 must not silently add fields or values to the decoded data tree.
 
+Production decoders, writers, and language-specific APIs belong in separate
+repositories. This repository accepts language-neutral specification text,
+grammar, conformance fixtures, and conformance protocol changes.
+
 ## Design principles
 
 - Prefer one unambiguous spelling for each structure.

@@ -13,3 +13,36 @@ indent_size = 2
 
 [tests/valid/line_endings_crlf.nano]
 end_of_line = crlf
+
+[tests/valid/line_endings_mixed.nano]
+end_of_line = unset
+
+[tests/valid/multiline_line_endings.nano]
+end_of_line = unset
+
+[tests/valid/no_final_newline.nano]
+insert_final_newline = false
+
+[tests/invalid/bare_cr.nano]
+end_of_line = unset
+
+[tests/invalid/control_character.nano]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+
+[tests/invalid/invalid_utf8.nano]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+
+[tests/invalid/raw_trailing_space.nano]
+trim_trailing_whitespace = unset
+
+[tests/invalid/utf8_bom.nano]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset

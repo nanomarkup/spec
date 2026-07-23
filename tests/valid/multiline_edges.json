@@ -1,0 +1,9 @@
+{
+  "leading": "\nfirst",
+  "internal": "first\n\nsecond",
+  "trailing": "last",
+  "symbols": "# string data\n:\n..\n|\n\"quoted\"\n  two leading content spaces",
+  "empty": "",
+  "status": "done"
+}
+

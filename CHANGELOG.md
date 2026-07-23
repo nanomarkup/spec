@@ -2,6 +2,19 @@
 
 All normative changes to Nano Markup are recorded here.
 
+## 0.3-draft — 2026-07-23
+
+- Explicitly accepted LF, CRLF, and mixed LF/CRLF source documents while
+  continuing to reject bare CR.
+- Defined writer line-ending behavior and multiline normalization to LF.
+- Finalized leading, internal, and trailing blank-line behavior for multiline
+  strings and expanded multiline edge fixtures.
+- Added byte-level fixtures for BOM, invalid UTF-8, forbidden controls, and
+  bare CR.
+- Added a conformance coverage matrix and language-neutral JSON adapter
+  protocol.
+- Kept production decoders and CI outside the specification repository.
+
 ## 0.2-draft — 2026-07-23
 
 - Defined comments and formatting as presentation metadata outside the data

@@ -5,7 +5,7 @@ tests for Nano Markup, a minimal, human-readable structured data format.
 
 ## Status
 
-The current specification is **Nano Markup 0.2-draft**. It is unstable and may
+The current specification is **Nano Markup 0.3-draft**. It is unstable and may
 change incompatibly before version 1.0. Implementations may experiment with the
 draft, but must not describe themselves as conforming to a stable Nano Markup
 standard.
@@ -18,6 +18,9 @@ Nano Markup source files use the `.nano` extension.
 - [grammar.ebnf](grammar.ebnf) summarizes the lexical grammar. Indentation is
   defined normatively in `SPEC.md`.
 - [tests](tests) contains valid and invalid conformance fixtures.
+- [CONFORMANCE.md](CONFORMANCE.md) defines the language-neutral JSON adapter
+  protocol used to test independent decoders.
+- [tests/COVERAGE.md](tests/COVERAGE.md) maps normative behavior to fixtures.
 - [CHANGELOG.md](CHANGELOG.md) records specification changes.
 - [CONTRIBUTING.md](CONTRIBUTING.md) explains how to propose changes.
 
@@ -27,6 +30,10 @@ separate document model. See the specification for the round-trip guarantees.
 
 Canonical serialization, schemas, references, includes, templates, and
 executable expressions are not part of this draft.
+
+The specification repository intentionally contains no production decoder and
+no implementation-specific build system. Each language implementation belongs
+in its own repository and consumes a pinned version of this conformance suite.
 
 ## License
 

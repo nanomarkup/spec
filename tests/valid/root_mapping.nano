@@ -3,6 +3,5 @@ name Ariana
 age 12
 nickname
 unicode Žilina 🚲
-escaped "quote: \" slash: \\ newline:\n tab:\t"
+escaped "quote: \" slash: \\ newline:\n return:\r tab:\t"
 hash value # this is data
-

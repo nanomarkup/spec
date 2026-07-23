@@ -1,5 +1,6 @@
 {
-  "specification": "0.2-draft",
+  "manifest_version": 1,
+  "specification": "0.3-draft",
   "valid": [
     {
       "source": "valid/root_mapping.nano",
@@ -36,6 +37,26 @@
     {
       "source": "valid/multiline_indentation.nano",
       "expected": "valid/multiline_indentation.json"
+    },
+    {
+      "source": "valid/line_endings_lf.nano",
+      "expected": "valid/line_endings_lf.json"
+    },
+    {
+      "source": "valid/line_endings_mixed.nano",
+      "expected": "valid/line_endings_mixed.json"
+    },
+    {
+      "source": "valid/no_final_newline.nano",
+      "expected": "valid/no_final_newline.json"
+    },
+    {
+      "source": "valid/multiline_edges.nano",
+      "expected": "valid/multiline_edges.json"
+    },
+    {
+      "source": "valid/multiline_line_endings.nano",
+      "expected": "valid/multiline_line_endings.json"
     }
   ],
   "invalid": [
@@ -82,7 +103,38 @@
     {
       "source": "invalid/comment_partial_indent.nano",
       "error": "E_INDENT"
+    },
+    {
+      "source": "invalid/duplicate_nested_key.nano",
+      "error": "E_DUPLICATE_KEY"
+    },
+    {
+      "source": "invalid/raw_leading_space.nano",
+      "error": "E_STRING"
+    },
+    {
+      "source": "invalid/raw_trailing_space.nano",
+      "error": "E_STRING"
+    },
+    {
+      "source": "invalid/multiline_partial_indent.nano",
+      "error": "E_INDENT"
+    },
+    {
+      "source": "invalid/bare_cr.nano",
+      "error": "E_ENCODING"
+    },
+    {
+      "source": "invalid/utf8_bom.nano",
+      "error": "E_ENCODING"
+    },
+    {
+      "source": "invalid/invalid_utf8.nano",
+      "error": "E_ENCODING"
+    },
+    {
+      "source": "invalid/control_character.nano",
+      "error": "E_ENCODING"
     }
   ]
 }
-

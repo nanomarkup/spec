@@ -1,0 +1,21 @@
+leading |
+
+    first
+internal |
+    first
+
+    second
+trailing |
+    last
+
+
+symbols |
+    # string data
+    :
+    ..
+    |
+    "quoted"
+      two leading content spaces
+empty |
+status done
+

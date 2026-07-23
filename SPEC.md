@@ -1,8 +1,8 @@
-# Nano Markup 0.2-draft
+# Nano Markup 0.3-draft
 
 ## 1. Status and conformance
 
-This document is the normative specification for Nano Markup 0.2-draft.
+This document is the normative specification for Nano Markup 0.3-draft.
 The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** are
 to be interpreted as requirement levels.
 
@@ -20,6 +20,9 @@ rather than silently alter or omit that value.
 An implementation MAY additionally provide a source-preserving document API.
 Such an API is outside data conformance and must keep presentation metadata
 separate from mapping keys, sequence items, and strings.
+
+The JSON protocol in `CONFORMANCE.md` is test infrastructure, not a Nano Markup
+serialization format and not part of the language data model.
 
 ## 2. Data model
 
@@ -57,8 +60,17 @@ The conventional file extension for a Nano Markup source document is `.nano`.
 
 A document MUST be UTF-8 without a byte-order mark. Invalid UTF-8, NUL, and
 literal control characters U+0001 through U+001F other than CR and LF used as
-line endings are errors. CRLF and LF line endings are accepted and normalized
-to LF before parsing. A final line ending does not add data.
+line endings are errors.
+
+LF and CRLF are both valid physical line endings and MAY be mixed in one
+document. Every CRLF pair is normalized to LF before structural parsing. A CR
+not immediately followed by LF is invalid. A final LF or CRLF terminates the
+last physical line but does not create an additional blank line or data value.
+
+A conforming writer MUST use either LF or CRLF for every line ending in one
+emitted document and SHOULD use LF unless its caller requests CRLF. The selected
+source line ending is presentation metadata. Normal data decoding does not
+preserve it; a source-preserving document API MAY do so.
 
 A literal tab is forbidden everywhere, including indentation and scalar text.
 The two-character escape `\t` represents a tab in a quoted string.
@@ -182,9 +194,16 @@ one indentation level more than the block header. Exactly that required prefix
 is removed; every additional character, including spaces and `#`, is preserved.
 
 Blank physical lines encountered while collecting a block become empty content
-lines. Trailing empty content lines are discarded. Remaining content lines are
-joined with LF, and no terminal LF is added. A block with no nonblank content is
-the empty string.
+lines. Their behavior is:
+
+- leading blank lines before the first nonblank content line are preserved;
+- blank lines between nonblank content lines are preserved;
+- blank lines after the last nonblank content line are discarded;
+- a block with no nonblank content is the empty string.
+
+Remaining content lines are joined with LF regardless of whether their source
+lines used LF or CRLF. No terminal LF is added automatically. To represent a
+string that deliberately ends with LF, use a quoted `\n` escape.
 
 Within a multiline block, mapping, sequence, quote, escape, and comment syntax
 has no special meaning. A nonblank line with less than the required content
@@ -253,7 +272,8 @@ use any internal architecture that produces the same result.
    sequence, NUL, or forbidden control character other than TAB, CR, and LF
    with `E_ENCODING`.
 2. Reject a literal tab anywhere with `E_TAB`.
-3. Convert every CRLF pair to LF. A CR not followed by LF is `E_ENCODING`.
+3. Convert every CRLF pair to LF. LF and CRLF may be mixed. A CR not followed
+   by LF is `E_ENCODING`.
 4. Split the source into physical lines. A final LF terminates the last line but
    does not create an additional blank line.
 
