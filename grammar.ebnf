@@ -1,4 +1,4 @@
-(* Nano Markup 0.3-draft lexical grammar over logical lines after line-ending
+(* Nano Markup 0.4-draft lexical grammar over logical lines after line-ending
    normalization. SPEC.md is normative. This grammar intentionally omits
    indentation stack processing, duplicate-key detection, block collection,
    and semantic root constraints. The active container selects mapping-entry
@@ -41,22 +41,27 @@ escape               = reverse-solidus,
                        ('"' | reverse-solidus | "n" | "r" | "t") ;
 reverse-solidus      = ? U+005C REVERSE SOLIDUS ? ;
 quoted-character     = ? Unicode scalar value except quotation mark,
-                         reverse solidus, CR, LF, TAB, NUL, and controls ? ;
+                         reverse solidus, TAB, CR, LF, U+0000-U+0008,
+                         U+000B-U+000C, U+000E-U+001F, and U+007F-U+009F ? ;
 
 raw-string           = raw-single
                      | raw-first, { raw-character }, raw-last ;
-raw-single           = ? permitted raw character except ASCII space,
-                         quotation mark, controls, CR, LF, TAB, and NUL ? ;
+raw-single           = ? Unicode scalar value except ASCII space, quotation
+                         mark, TAB, CR, LF, U+0000-U+0008, U+000B-U+000C,
+                         U+000E-U+001F, and U+007F-U+009F ? ;
 raw-first            = raw-single ;
-raw-last             = ? permitted raw character except ASCII space,
-                         controls, CR, LF, TAB, and NUL ? ;
+raw-last             = ? Unicode scalar value except ASCII space, TAB, CR, LF,
+                         U+0000-U+0008, U+000B-U+000C, U+000E-U+001F,
+                         and U+007F-U+009F ? ;
 raw-character        = space
-                     | ? permitted Unicode scalar value except controls,
-                         CR, LF, TAB, and NUL ? ;
+                     | ? Unicode scalar value except TAB, CR, LF,
+                         U+0000-U+0008, U+000B-U+000C, U+000E-U+001F,
+                         and U+007F-U+009F ? ;
 
 comment-line         = indentation, "#", { comment-character } ;
 blank-line           = { space } ;
 indentation          = { "    " } ;
 space                = " " ;
-comment-character    = ? Unicode scalar value except CR, LF, TAB, NUL,
-                         and controls ? ;
+comment-character    = ? Unicode scalar value except TAB, CR, LF,
+                         U+0000-U+0008, U+000B-U+000C, U+000E-U+001F,
+                         and U+007F-U+009F ? ;

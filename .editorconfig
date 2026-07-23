@@ -23,10 +23,40 @@ end_of_line = unset
 [tests/valid/no_final_newline.nano]
 insert_final_newline = false
 
+[tests/valid/whitespace_only.nano]
+trim_trailing_whitespace = unset
+
 [tests/invalid/bare_cr.nano]
 end_of_line = unset
 
 [tests/invalid/control_character.nano]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+
+[tests/invalid/c1_control.nano]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+
+[tests/invalid/del_control.nano]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+
+[tests/invalid/empty_after_separator.nano]
+trim_trailing_whitespace = unset
+
+[tests/invalid/error_precedence_encoding.nano]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+
+[tests/invalid/error_precedence_tab.nano]
 charset = unset
 end_of_line = unset
 insert_final_newline = unset
@@ -38,7 +68,19 @@ end_of_line = unset
 insert_final_newline = unset
 trim_trailing_whitespace = unset
 
+[tests/invalid/nul.nano]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+
 [tests/invalid/raw_trailing_space.nano]
+trim_trailing_whitespace = unset
+
+[tests/invalid/tab_scalar.nano]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
 trim_trailing_whitespace = unset
 
 [tests/invalid/utf8_bom.nano]

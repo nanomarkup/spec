@@ -1,6 +1,6 @@
 {
   "manifest_version": 1,
-  "specification": "0.3-draft",
+  "specification": "0.4-draft",
   "valid": [
     {
       "source": "valid/root_mapping.nano",
@@ -57,6 +57,26 @@
     {
       "source": "valid/multiline_line_endings.nano",
       "expected": "valid/multiline_line_endings.json"
+    },
+    {
+      "source": "valid/empty_document.nano",
+      "expected": "valid/empty_document.json"
+    },
+    {
+      "source": "valid/whitespace_only.nano",
+      "expected": "valid/whitespace_only.json"
+    },
+    {
+      "source": "valid/empty_root_sequence.nano",
+      "expected": "valid/empty_root_sequence.json"
+    },
+    {
+      "source": "valid/sequence_duplicates.nano",
+      "expected": "valid/sequence_duplicates.json"
+    },
+    {
+      "source": "valid/key_scopes.nano",
+      "expected": "valid/key_scopes.json"
     }
   ],
   "invalid": [
@@ -135,6 +155,50 @@
     {
       "source": "invalid/control_character.nano",
       "error": "E_ENCODING"
+    },
+    {
+      "source": "invalid/key_starts_digit.nano",
+      "error": "E_KEY"
+    },
+    {
+      "source": "invalid/key_starts_hyphen.nano",
+      "error": "E_KEY"
+    },
+    {
+      "source": "invalid/quoted_trailing_text.nano",
+      "error": "E_STRING"
+    },
+    {
+      "source": "invalid/empty_after_separator.nano",
+      "error": "E_STRING"
+    },
+    {
+      "source": "invalid/tab_scalar.nano",
+      "error": "E_TAB"
+    },
+    {
+      "source": "invalid/nul.nano",
+      "error": "E_ENCODING"
+    },
+    {
+      "source": "invalid/del_control.nano",
+      "error": "E_ENCODING"
+    },
+    {
+      "source": "invalid/c1_control.nano",
+      "error": "E_ENCODING"
+    },
+    {
+      "source": "invalid/comment_only_partial_indent.nano",
+      "error": "E_INDENT"
+    },
+    {
+      "source": "invalid/error_precedence_encoding.nano",
+      "error": "E_ENCODING"
+    },
+    {
+      "source": "invalid/error_precedence_tab.nano",
+      "error": "E_TAB"
     }
   ]
 }

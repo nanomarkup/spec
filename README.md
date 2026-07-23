@@ -5,7 +5,7 @@ tests for Nano Markup, a minimal, human-readable structured data format.
 
 ## Status
 
-The current specification is **Nano Markup 0.3-draft**. It is unstable and may
+The current specification is **Nano Markup 0.4-draft**. It is unstable and may
 change incompatibly before version 1.0. Implementations may experiment with the
 draft, but must not describe themselves as conforming to a stable Nano Markup
 standard.

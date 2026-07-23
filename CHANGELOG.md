@@ -2,6 +2,18 @@
 
 All normative changes to Nano Markup are recorded here.
 
+## 0.4-draft — 2026-07-23
+
+- Distinguished the complete value model from document trees, whose roots are
+  restricted to mappings and sequences.
+- Defined the complete forbidden-control ranges, including DEL and C1 control
+  characters, while retaining escaped TAB, LF, and CR as string values.
+- Made error-category selection deterministic and required validation before
+  comment lines are discarded.
+- Documented reserved scalar spellings and added fixtures for empty roots,
+  sequence order and duplicates, key grammar and scope, malformed strings,
+  literal tabs, and control characters.
+
 ## 0.3-draft — 2026-07-23
 
 - Explicitly accepted LF, CRLF, and mixed LF/CRLF source documents while

@@ -18,10 +18,10 @@ Expected JSON describes only the data model. Comments, formatting, quote
 choice, line endings, and mapping source order never appear in expected output.
 
 Some fixtures intentionally contain CRLF, mixed endings, no final newline,
-bare CR, a UTF-8 BOM, invalid UTF-8, forbidden control bytes, or trailing
-whitespace. Git text normalization is disabled for those paths. Tools must read
-`.nano` fixtures as raw bytes and must not rewrite them merely by opening the
-repository.
+bare CR, a UTF-8 BOM, invalid UTF-8, literal tabs, C0/DEL/C1 control bytes, or
+significant trailing whitespace. Git text normalization is disabled for those
+paths. Tools must read `.nano` fixtures as raw bytes and must not rewrite them
+merely by opening the repository.
 
 See [COVERAGE.md](COVERAGE.md) for the rule-to-fixture matrix and
 [CONFORMANCE.md](../CONFORMANCE.md) for the decoder adapter protocol.

@@ -1,8 +1,8 @@
-# Nano Markup 0.3-draft
+# Nano Markup 0.4-draft
 
 ## 1. Status and conformance
 
-This document is the normative specification for Nano Markup 0.3-draft.
+This document is the normative specification for Nano Markup 0.4-draft.
 The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** are
 to be interpreted as requirement levels.
 
@@ -10,12 +10,13 @@ A conforming data decoder MUST accept every valid conformance fixture, produce
 the specified data tree, and reject every invalid fixture with the specified
 error category. Exact diagnostic wording is implementation-defined.
 
-A conforming data writer MUST emit a Nano Markup document that a conforming
-decoder reads as a data tree equivalent to the writer's input. A data writer is
-not required to reproduce comments, whitespace, quote choice, line endings, or
-mapping source order because those properties are not part of the data model.
-A writer given a value outside the Nano Markup data model MUST report an error
-rather than silently alter or omit that value.
+A conforming data writer MUST accept a Nano Markup document tree and emit a
+Nano Markup document that a conforming decoder reads as a data tree equivalent
+to the writer's input. A data writer is not required to reproduce comments,
+whitespace, quote choice, line endings, or mapping source order because those
+properties are not part of the data model.
+A writer given a string root or a value outside the Nano Markup data model MUST
+report an error rather than silently alter or omit that value.
 
 An implementation MAY additionally provide a source-preserving document API.
 Such an API is outside data conformance and must keep presentation metadata
@@ -29,10 +30,16 @@ serialization format and not part of the language data model.
 A Nano Markup value is exactly one of:
 
 - **String**: a sequence of Unicode scalar values excluding U+0000 through
-  U+001F except TAB, LF, and CR.
+  U+0008, U+000B through U+000C, U+000E through U+001F, and U+007F through
+  U+009F. TAB, LF, and CR are permitted string values.
 - **Mapping**: an unordered association of unique Nano Markup keys to values.
 - **Sequence**: an ordered collection of values. Values in one sequence MAY
   have different types.
+
+A Nano Markup document tree is a Nano Markup value whose root is a Mapping or
+Sequence. A String is a value only within a Mapping or Sequence; it cannot be a
+document root. Every decoded document and every input accepted by a conforming
+data writer is therefore a document tree.
 
 String and key comparison is code-point exact and performs no Unicode
 normalization or case folding. Two mappings are equivalent when they contain
@@ -47,7 +54,8 @@ NOT change the decoded data tree.
 
 Consequently, data round-tripping and source round-tripping are different:
 
-- `decode(encode(tree))` MUST produce a data tree equivalent to `tree`.
+- `decode(encode(tree))` MUST produce a data tree equivalent to `tree` for
+  every Nano Markup document tree accepted by the writer.
 - `encode(decode(document))` is not required to reproduce the original source.
 
 Nano Markup does not infer nulls, booleans, numbers, dates, or any other scalar
@@ -58,9 +66,10 @@ specification.
 
 The conventional file extension for a Nano Markup source document is `.nano`.
 
-A document MUST be UTF-8 without a byte-order mark. Invalid UTF-8, NUL, and
-literal control characters U+0001 through U+001F other than CR and LF used as
-line endings are errors.
+A document MUST be UTF-8 without a byte-order mark. Invalid UTF-8 and literal
+U+0000 through U+0008, U+000B through U+000C, U+000E through U+001F, or U+007F
+through U+009F are errors. Literal TAB is handled separately below. Literal CR
+and LF are permitted only as physical line endings as defined below.
 
 LF and CRLF are both valid physical line endings and MAY be mixed in one
 document. Every CRLF pair is normalized to LF before structural parsing. A CR
@@ -82,10 +91,11 @@ a multiline block as described in section 8.
 
 Indentation expresses containment. One indentation level is exactly four ASCII
 spaces. Every nonblank syntax or comment line MUST begin with a number of
-spaces divisible by four. For syntax lines, tabs, partial levels, skipped
-levels, and indentation without a parent container or multiline block are
-errors. A comment line need not correspond to an open container, because its
-indentation is presentation metadata.
+spaces divisible by four. Tabs, partial levels, skipped levels, and syntax
+indentation without a parent container or multiline block are errors. A
+comment line need not correspond to an open container, because its indentation
+is presentation metadata, but its indentation is validated before the comment
+is ignored.
 
 After the required structural prefix has been removed, multiline block content
 MAY begin with any number of additional ASCII spaces. Those spaces are string
@@ -116,6 +126,7 @@ entry. Blank lines and comments MAY appear before or after it.
 
 A document cannot have a scalar root. A quoted line at the root, for example,
 is an attempted scalar root and produces `E_SYNTAX` rather than a mapping key.
+There is no alternate scalar-root spelling.
 
 ## 7. Mappings and sequences
 
@@ -160,13 +171,28 @@ indented exactly one further level. With no such data lines they are empty.
 ### 8.1 Raw strings
 
 A raw string is nonempty text on one physical line. It MUST NOT begin or end
-with an ASCII space, begin with `"`, or contain a control character. A sequence
-raw string also cannot begin with `#`, because that spelling starts a comment.
-All other Unicode scalar values are preserved exactly.
+with an ASCII space, begin with `"`, contain a literal TAB, CR, or LF, or
+contain a Unicode scalar value excluded by section 2. A sequence raw string
+also cannot begin with `#`, because that spelling starts a comment. All other
+Unicode scalar values are preserved exactly.
 
 On a sequence line, the exact tokens `..`, `:`, and `|` are not raw strings.
 On a mapping line, structural markers are recognized only in the complete forms
 defined in section 7.1.
+
+The spellings that require quoting in a scalar position are summarized here:
+
+| Scalar value | Mapping value | Sequence item |
+| --- | --- | --- |
+| empty string | bare key or `""` | `""` |
+| `|` | `"|"` | `"|"` |
+| `..` | `..` or `".."` | `".."` |
+| `:` | `:` or `":"` | `":"` |
+| begins with `#` | raw or quoted | quoted |
+
+In the mapping column, `..` and `:` are values following the required key and
+separator; for example, `marker ..`. The forms `key..`, `key:`, and `key |`
+remain structural syntax.
 
 ### 8.2 Quoted strings
 
@@ -181,9 +207,10 @@ position. It supports exactly these escapes:
 | `\r` | carriage return |
 | `\t` | tab |
 
-Other escapes, missing closing quotes, and unescaped control characters are
-errors. Unicode text is written directly as UTF-8; `\u` escapes are not part
-of this draft.
+Other escapes, missing closing quotes, trailing text after the closing quote,
+unescaped TAB, CR, or LF, and Unicode scalar values excluded by section 2 are
+errors. Unicode text is written directly as UTF-8; `\u` escapes are not part of
+this draft.
 
 ### 8.3 Multiline strings
 
@@ -216,6 +243,10 @@ Outside multiline blocks, a line whose first non-indentation character is `#`
 is a comment. A data decoder MUST ignore the entire line, including its line
 ending. Inline comments are not supported. A `#` elsewhere in a raw or quoted
 scalar is data.
+
+Source encoding, forbidden-character, tab, and indentation validation occurs
+before a comment line is ignored. A comment cannot hide an otherwise invalid
+byte, character, tab, or partial indentation level.
 
 Comment indentation MUST use complete four-space levels, but comments do not
 open containers, close containers, satisfy a container's need for a child,
@@ -269,8 +300,8 @@ use any internal architecture that produces the same result.
 ### 10.1 Prepare physical lines
 
 1. Decode the input as UTF-8 and reject a byte-order mark, invalid byte
-   sequence, NUL, or forbidden control character other than TAB, CR, and LF
-   with `E_ENCODING`.
+   sequence, U+0000 through U+0008, U+000B through U+000C, U+000E through
+   U+001F, or U+007F through U+009F with `E_ENCODING`.
 2. Reject a literal tab anywhere with `E_TAB`.
 3. Convert every CRLF pair to LF. LF and CRLF may be mixed. A CR not followed
    by LF is `E_ENCODING`.
@@ -295,8 +326,8 @@ not change the current level.
 
 When parsing a mapping or sequence at level `n`:
 
-1. Ignore blank and comment lines, except that multiline collection follows
-   section 10.5.
+1. After validating their indentation, ignore blank and comment lines, except
+   that multiline collection follows section 10.5.
 2. A data line below level `n` ends the current container.
 3. A data line above level `n` without a preceding container or multiline
    header at level `n` is `E_INDENT`.
@@ -356,7 +387,8 @@ presentation metadata are not inserted into the result.
 
 Conformance fixtures use these stable error categories:
 
-- `E_ENCODING`: invalid UTF-8, a byte-order mark, NUL, or forbidden control text.
+- `E_ENCODING`: invalid UTF-8, a byte-order mark, a bare CR, or a forbidden
+  control character.
 - `E_TAB`: a literal tab anywhere in the source.
 - `E_INDENT`: partial, skipped, mixed, or unexpected indentation.
 - `E_KEY`: a key does not match the required grammar.
@@ -365,8 +397,23 @@ Conformance fixtures use these stable error categories:
 - `E_STRING`: malformed quoted or raw string syntax.
 - `E_SYNTAX`: any other structurally invalid document.
 
-If more than one category could apply, a parser MAY report either category
-unless a conformance fixture requires one specific category.
+When more than one error exists, a conforming decoder MUST report the category
+with the highest priority in this order:
+
+1. `E_ENCODING`
+2. `E_TAB`
+3. `E_INDENT`
+4. `E_SYNTAX`
+5. `E_KEY`
+6. `E_DUPLICATE_KEY`
+7. `E_ESCAPE`
+8. `E_STRING`
+
+Within one category, the error whose offending source byte occurs first MUST be
+reported. For an error detected at end-of-input, the position immediately after
+the final byte is its source position. This ordering makes conformance
+deterministic; implementations may still provide additional diagnostics outside
+the conformance result.
 
 ## 12. JSON representation used by tests
 

@@ -4,8 +4,16 @@ tests/valid/line_endings_crlf.nano -text -eol
 tests/valid/line_endings_mixed.nano -text -eol
 tests/valid/no_final_newline.nano -text -eol
 tests/valid/multiline_line_endings.nano -text -eol
+tests/valid/whitespace_only.nano -text -eol
 tests/invalid/bare_cr.nano -text -eol
+tests/invalid/c1_control.nano -text -eol
 tests/invalid/control_character.nano -text -eol
+tests/invalid/del_control.nano -text -eol
+tests/invalid/empty_after_separator.nano -text -eol
+tests/invalid/error_precedence_encoding.nano -text -eol
+tests/invalid/error_precedence_tab.nano -text -eol
 tests/invalid/invalid_utf8.nano -text -eol
+tests/invalid/nul.nano -text -eol
 tests/invalid/raw_trailing_space.nano -text -eol
+tests/invalid/tab_scalar.nano -text -eol
 tests/invalid/utf8_bom.nano -text -eol
