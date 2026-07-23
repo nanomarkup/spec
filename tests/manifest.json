@@ -125,6 +125,14 @@
     {
       "source": "valid/root_named_sequence_like_string.nano",
       "expected": "valid/root_named_sequence_like_string.json"
+    },
+    {
+      "source": "valid/root_unicode_whitespace.nano",
+      "expected": "valid/root_unicode_whitespace.json"
+    },
+    {
+      "source": "valid/unicode_whitespace_nested.nano",
+      "expected": "valid/unicode_whitespace_nested.json"
     }
   ],
   "invalid": [

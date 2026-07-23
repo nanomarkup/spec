@@ -82,8 +82,10 @@ preserve it; a source-preserving document API MAY do so.
 A literal tab is forbidden everywhere, including indentation and scalar text.
 The two-character escape `\t` represents a tab in a quoted string.
 
-Whitespace-only lines are blank lines and are ignored except while collecting
-a multiline block as described in section 8.
+A blank line contains zero or more ASCII spaces and no other characters. Blank
+lines are ignored except while collecting a multiline block as described in
+section 8. Other Unicode whitespace characters permitted by the data model are
+string data, not blank-line syntax.
 
 ## 4. Indentation
 
@@ -132,7 +134,7 @@ The root value is the document's only top-level data entry. Blank lines and
 comments MAY appear before or after it. Any additional top-level data line is
 `E_SYNTAX`.
 
-An empty, whitespace-only, or comment-only document represents an empty
+An empty, ASCII-space-only, or comment-only document represents an empty
 mapping. Consequently, an empty root string MUST be written as `""`. The exact
 root strings `..`, `:`, and `|`, and a root string beginning with `#`, MUST be
 quoted because their unquoted forms are structural syntax or a comment.

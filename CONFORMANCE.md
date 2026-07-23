@@ -84,6 +84,27 @@ language error remain implementation-defined.
 
 ## Writers
 
-Protocol version 1 tests decoders only. Writer conformance will use a separate
-round-trip protocol so parser correctness is not confused with formatting,
-mapping order, comment preservation, or quote selection.
+Writer protocol version 1 invokes an implementation-specific adapter as:
+
+```text
+ADAPTER write PATH NEWLINE
+```
+
+`PATH` is a UTF-8 JSON file containing only objects, arrays, and strings.
+`NEWLINE` is `LF` or `CRLF`. The adapter must write exactly one UTF-8 JSON
+object followed by LF. On success it has this shape:
+
+```json
+{"ok": true, "source": "..\n    name Ariana"}
+```
+
+The runner decodes `source` with every conforming decoder, requires a tree
+equivalent to the JSON input, requires the requested physical line ending, and
+rejects literal tabs, inconsistent line endings, or an automatic final line
+ending. On an input outside the Nano Markup data model the adapter reports
+`{"ok": false, "error": "E_VALUE"}`. Protocol error names are test
+infrastructure and do not alter implementation-specific public exceptions.
+
+`tests/writer/manifest.json` lists round-trip and invalid writer inputs. JSON
+cannot represent cyclic containers or implementation-specific host values, so
+each implementation must test those cases in its native suite.

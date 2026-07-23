@@ -4,6 +4,8 @@ All normative changes to Nano Markup are recorded here.
 
 ## 0.5-draft — 2026-07-23
 
+- Clarified that only empty or ASCII-space-only physical lines are blank;
+  permitted Unicode whitespace remains string data in every scalar context.
 - Completed the root data model by allowing String, Mapping, and Sequence
   values as document roots.
 - Replaced the implicit mapping root with the explicit `..` mapping marker;

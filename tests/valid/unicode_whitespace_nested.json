@@ -1,0 +1,5 @@
+{
+  "mapping-value": "\u00a0",
+  "sequence": ["\u2003", "\u2028"],
+  "multiline": "\u00a0\n\u3000"
+}

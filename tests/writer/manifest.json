@@ -1,0 +1,13 @@
+{
+  "manifest_version": 1,
+  "specification": "0.5-draft",
+  "round_trip": [
+    {"value": "valid/scalars.json"},
+    {"value": "valid/containers.json"},
+    {"value": "valid/unicode.json"}
+  ],
+  "invalid": [
+    {"value": "invalid/bad_key.json", "error": "E_VALUE"},
+    {"value": "invalid/forbidden_character.json", "error": "E_VALUE"}
+  ]
+}
