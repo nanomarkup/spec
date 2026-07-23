@@ -26,6 +26,8 @@ with `..`, or an explicit Sequence root marked with `:`.
 - [tests/COVERAGE.md](tests/COVERAGE.md) maps normative behavior to fixtures.
 - [CHANGELOG.md](CHANGELOG.md) records specification changes.
 - [CONTRIBUTING.md](CONTRIBUTING.md) explains how to propose changes.
+- [VERSIONING.md](VERSIONING.md) defines draft, release-candidate, and stable
+  compatibility rules.
 
 Comments and formatting are presentation metadata, not serialized data. A
 normal data decoder may discard them; source-preserving editors may expose a

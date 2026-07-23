@@ -1,0 +1,23 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - run: python tests/validate.py
+      - name: Verify tag and specification version
+        run: test "$GITHUB_REF_NAME" = "v$(head -1 SPEC.md | awk '{print $4}')"
+      - uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
