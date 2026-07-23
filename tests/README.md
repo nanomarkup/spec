@@ -2,7 +2,7 @@
 
 `manifest.json` lists every fixture. Valid `.nano` files have an expected JSON
 data tree. Invalid `.nano` files have one required error category from section
-10 of `SPEC.md`.
+11 of `SPEC.md`.
 
 A conforming parser must:
 
@@ -14,3 +14,5 @@ Exact diagnostic text, source ranges, and recovery after the first error are
 implementation-defined. The CRLF fixture is intentionally excluded from Git
 line-ending normalization.
 
+Expected JSON describes only the data model. Comments, formatting, quote
+choice, line endings, and mapping source order never appear in expected output.

@@ -1,29 +1,59 @@
-# Nano Markup 0.1-draft
+# Nano Markup 0.2-draft
 
 ## 1. Status and conformance
 
-This document is the normative specification for Nano Markup 0.1-draft.
+This document is the normative specification for Nano Markup 0.2-draft.
 The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** are
 to be interpreted as requirement levels.
 
-A conforming parser MUST accept every valid conformance fixture, produce the
-specified data tree, and reject every invalid fixture with the specified error
-category. Exact diagnostic wording is implementation-defined.
+A conforming data decoder MUST accept every valid conformance fixture, produce
+the specified data tree, and reject every invalid fixture with the specified
+error category. Exact diagnostic wording is implementation-defined.
+
+A conforming data writer MUST emit a Nano Markup document that a conforming
+decoder reads as a data tree equivalent to the writer's input. A data writer is
+not required to reproduce comments, whitespace, quote choice, line endings, or
+mapping source order because those properties are not part of the data model.
+A writer given a value outside the Nano Markup data model MUST report an error
+rather than silently alter or omit that value.
+
+An implementation MAY additionally provide a source-preserving document API.
+Such an API is outside data conformance and must keep presentation metadata
+separate from mapping keys, sequence items, and strings.
 
 ## 2. Data model
 
 A Nano Markup value is exactly one of:
 
-- **String**: a sequence of Unicode scalar values.
-- **Mapping**: an unordered association of unique keys to values.
+- **String**: a sequence of Unicode scalar values excluding U+0000 through
+  U+001F except TAB, LF, and CR.
+- **Mapping**: an unordered association of unique Nano Markup keys to values.
 - **Sequence**: an ordered collection of values. Values in one sequence MAY
   have different types.
 
-Comments and formatting are not part of the data model. Nano Markup does not
-infer nulls, booleans, numbers, dates, or any other scalar types. Applications
-MAY interpret strings using rules outside this specification.
+String and key comparison is code-point exact and performs no Unicode
+normalization or case folding. Two mappings are equivalent when they contain
+the same keys associated with equivalent values, regardless of source order.
+Two sequences are equivalent when they have the same number of positionally
+equivalent items. Duplicate sequence items are significant and permitted.
+
+Comments, whitespace, quote choice, line endings, and mapping source order are
+presentation metadata and are not part of the data model. A data decoder MAY
+discard them. Inserting or removing a comment outside a multiline string MUST
+NOT change the decoded data tree.
+
+Consequently, data round-tripping and source round-tripping are different:
+
+- `decode(encode(tree))` MUST produce a data tree equivalent to `tree`.
+- `encode(decode(document))` is not required to reproduce the original source.
+
+Nano Markup does not infer nulls, booleans, numbers, dates, or any other scalar
+types. Applications MAY interpret strings using rules outside this
+specification.
 
 ## 3. Source text
+
+The conventional file extension for a Nano Markup source document is `.nano`.
 
 A document MUST be UTF-8 without a byte-order mark. Invalid UTF-8, NUL, and
 literal control characters U+0001 through U+001F other than CR and LF used as
@@ -39,9 +69,15 @@ a multiline block as described in section 8.
 ## 4. Indentation
 
 Indentation expresses containment. One indentation level is exactly four ASCII
-spaces. Every nonblank line MUST begin with a number of spaces divisible by
-four. Tabs, partial levels, skipped levels, and indentation without a parent
-container or multiline block are errors.
+spaces. Every nonblank syntax or comment line MUST begin with a number of
+spaces divisible by four. For syntax lines, tabs, partial levels, skipped
+levels, and indentation without a parent container or multiline block are
+errors. A comment line need not correspond to an open container, because its
+indentation is presentation metadata.
+
+After the required structural prefix has been removed, multiline block content
+MAY begin with any number of additional ASCII spaces. Those spaces are string
+data and do not have to form complete indentation levels.
 
 A child is indented exactly one level more than its parent header. A dedent ends
 the current container and returns to the matching earlier level.
@@ -140,9 +176,10 @@ of this draft.
 ### 8.3 Multiline strings
 
 A multiline string begins with `key |` in a mapping or `|` in a sequence. Its
-content is collected from following physical lines at least one indentation
-level deeper than the header. Exactly one structural indentation level is
-removed from every nonblank content line; any additional spaces are preserved.
+content is collected before the following physical lines are interpreted as
+comments or structural syntax. A nonblank content line must begin with at least
+one indentation level more than the block header. Exactly that required prefix
+is removed; every additional character, including spaces and `#`, is preserved.
 
 Blank physical lines encountered while collecting a block become empty content
 lines. Trailing empty content lines are discarded. Remaining content lines are
@@ -150,19 +187,152 @@ joined with LF, and no terminal LF is added. A block with no nonblank content is
 the empty string.
 
 Within a multiline block, mapping, sequence, quote, escape, and comment syntax
-has no special meaning. A nonblank line indented at or above the header's level
-ends the block and is parsed normally.
+has no special meaning. A nonblank line with less than the required content
+prefix ends the block and is parsed normally. If that line's indentation is not
+valid in the surrounding structure, parsing subsequently produces `E_INDENT`.
 
 ## 9. Comments
 
 Outside multiline blocks, a line whose first non-indentation character is `#`
-is a comment and is ignored. Inline comments are not supported. A `#` elsewhere
-in a raw or quoted scalar is data.
+is a comment. A data decoder MUST ignore the entire line, including its line
+ending. Inline comments are not supported. A `#` elsewhere in a raw or quoted
+scalar is data.
 
 Comment indentation MUST use complete four-space levels, but comments do not
-open containers or change the indentation stack.
+open containers, close containers, satisfy a container's need for a child,
+participate in duplicate-key detection, or add any value to the data tree.
+Comments MAY occur before or after the root and between any two syntax lines.
 
-## 10. Errors
+A writer serializing only a data tree SHOULD emit no comments because the tree
+contains no comment information. An implementation MAY accept comment metadata
+through a separate document API, but that API is not part of Nano Markup data
+conformance. A tool claiming source-preserving behavior must retain comments
+outside its data tree and restore their relative placement.
+
+Removing every comment line from a valid document MUST leave a document with
+the same decoded data tree. This rule does not apply to lines beginning with
+`#` inside multiline strings, where the character is data.
+
+### 9.1 Data serialization example
+
+Given this source document:
+
+```text
+# User profile
+name Ariana
+age 12
+```
+
+a data decoder produces a mapping equivalent to:
+
+```json
+{
+  "name": "Ariana",
+  "age": "12"
+}
+```
+
+A data writer may later emit only:
+
+```text
+name Ariana
+age 12
+```
+
+Losing the comment in this operation is expected presentation loss, not data
+loss. A source-preserving editor must use a separate document representation.
+
+## 10. Normative parsing algorithm
+
+A conforming decoder MUST behave as if it performs the following steps. It may
+use any internal architecture that produces the same result.
+
+### 10.1 Prepare physical lines
+
+1. Decode the input as UTF-8 and reject a byte-order mark, invalid byte
+   sequence, NUL, or forbidden control character other than TAB, CR, and LF
+   with `E_ENCODING`.
+2. Reject a literal tab anywhere with `E_TAB`.
+3. Convert every CRLF pair to LF. A CR not followed by LF is `E_ENCODING`.
+4. Split the source into physical lines. A final LF terminates the last line but
+   does not create an additional blank line.
+
+### 10.2 Classify the root
+
+1. Ignore blank and comment lines while looking for the first data line.
+2. If there is no data line, return an empty mapping.
+3. If the first data line is exactly `:` at indentation level zero, create a
+   root sequence and parse its children at level one. Any other top-level data
+   line after that sequence is `E_SYNTAX`.
+4. Otherwise, create an implicit root mapping and parse entries at level zero.
+   A top-level line that is only a scalar is `E_SYNTAX`.
+
+### 10.3 Parse indentation and containers
+
+For syntax and comment lines, count leading ASCII spaces and require the count
+to be divisible by four. The quotient is the indentation level. Blank lines do
+not change the current level.
+
+When parsing a mapping or sequence at level `n`:
+
+1. Ignore blank and comment lines, except that multiline collection follows
+   section 10.5.
+2. A data line below level `n` ends the current container.
+3. A data line above level `n` without a preceding container or multiline
+   header at level `n` is `E_INDENT`.
+4. A child of a container header at level `n` must be at level `n + 1`.
+   Encountering a deeper level is `E_INDENT`; encountering the same or a lower
+   level means the container is empty.
+5. Mapping keys are compared exactly as written. A repeated key in the current
+   mapping is `E_DUPLICATE_KEY`.
+
+Blank and comment lines between a container header and the next data line do
+not make the container nonempty. The next data line determines whether a child
+exists.
+
+### 10.4 Recognize syntax lines
+
+In a mapping, after indentation is removed, recognize a line in this order:
+
+1. Exact `key..`: nested mapping.
+2. Exact `key:`: nested sequence.
+3. Exact `key |`: multiline string.
+4. Exact `key`: empty string.
+5. Exact `key`, one ASCII space, then a raw or quoted scalar.
+
+In a sequence, recognize a line in this order:
+
+1. Exact `..`: mapping item.
+2. Exact `:`: sequence item.
+3. Exact `|`: multiline string item.
+4. A raw or quoted scalar item.
+
+The key and scalar must satisfy sections 5 and 8. Text that matches none of the
+forms is an error from the most specific applicable category in section 11.
+
+### 10.5 Collect multiline strings
+
+For a multiline header at level `n`, the required content prefix is exactly
+`4 × (n + 1)` ASCII spaces.
+
+1. Visit subsequent physical lines without first classifying comments.
+2. Accumulate blank lines provisionally.
+3. If a nonblank line begins with the required prefix, remove exactly that
+   prefix, append any provisional blank lines, and append the remaining text.
+4. If a nonblank line does not begin with the required prefix, discard
+   provisional trailing blank lines and end the block before that line.
+5. At end-of-file, discard provisional trailing blank lines.
+6. Join collected lines with LF and do not append an implicit terminal LF.
+
+After collection ends, resume structural parsing at the first unconsumed line.
+
+### 10.6 Produce the data tree
+
+Decode quoted escapes only after a scalar has been classified as quoted. Keep
+raw and multiline content exactly as defined in section 8. Comments and other
+presentation metadata are not inserted into the result.
+
+## 11. Errors
 
 Conformance fixtures use these stable error categories:
 
@@ -178,7 +348,7 @@ Conformance fixtures use these stable error categories:
 If more than one category could apply, a parser MAY report either category
 unless a conformance fixture requires one specific category.
 
-## 11. JSON representation used by tests
+## 12. JSON representation used by tests
 
 Expected-result files use JSON only as a language-neutral description of the
 Nano Markup data tree:
@@ -190,7 +360,7 @@ Nano Markup data tree:
 This representation does not add JSON typing to Nano Markup. For example,
 `age 20` maps to the JSON string `"20"`, not the JSON number `20`.
 
-## 12. Example
+## 13. Example
 
 ```text
 universities:
@@ -212,8 +382,18 @@ universities:
 The example represents a mapping whose `universities` value is a sequence.
 That sequence contains a mapping, and every scalar—including `20`—is a string.
 
-## 13. Deferred features
+## 14. Deferred features
 
 This draft does not define canonical serialization, schemas, references,
 aliases, includes, templates, executable expressions, or application-specific
 type conversion. Such features require a later specification revision.
+
+## 15. Security and resource limits
+
+Nano Markup has no executable directives: comments, keys, and values MUST NOT
+change parser configuration or invoke code merely by being parsed.
+
+Implementations MAY limit input bytes, line length, nesting depth, mapping or
+sequence size, and decoded string size to protect against resource exhaustion.
+Limits and the error reported when they are exceeded MUST be documented. A
+decoder must apply duplicate-key checks even when processing untrusted input.

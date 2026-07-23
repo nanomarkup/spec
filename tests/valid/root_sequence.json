@@ -1,5 +1,6 @@
 [
   "Math",
+  "# literal hash",
   "..",
   "",
   {
@@ -11,4 +12,3 @@
   ],
   "first line\nsecond line"
 ]
-

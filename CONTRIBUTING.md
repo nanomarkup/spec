@@ -16,6 +16,10 @@ A proposal should include:
 Normative changes must update `SPEC.md`, `grammar.ebnf` when applicable, the
 conformance fixtures, and `CHANGELOG.md` together.
 
+Comments and formatting proposals must distinguish changes to the data model
+from changes to the presentation or document model. A presentation feature
+must not silently add fields or values to the decoded data tree.
+
 ## Design principles
 
 - Prefer one unambiguous spelling for each structure.
@@ -32,4 +36,3 @@ stable versions, once published, must remain backward compatible unless they
 start a new major version.
 
 Contributions are accepted under the repository's CC BY 4.0 license.
-

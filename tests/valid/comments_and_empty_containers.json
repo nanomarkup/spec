@@ -1,0 +1,12 @@
+{
+  "empty_mapping": {},
+  "empty_sequence": [],
+  "person": {
+    "name": "Ariana"
+  },
+  "items": [
+    "one",
+    {}
+  ]
+}
+

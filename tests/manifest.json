@@ -1,5 +1,5 @@
 {
-  "specification": "0.1-draft",
+  "specification": "0.2-draft",
   "valid": [
     {
       "source": "valid/root_mapping.nano",
@@ -24,6 +24,18 @@
     {
       "source": "valid/line_endings_crlf.nano",
       "expected": "valid/line_endings_crlf.json"
+    },
+    {
+      "source": "valid/comment_only.nano",
+      "expected": "valid/comment_only.json"
+    },
+    {
+      "source": "valid/comments_and_empty_containers.nano",
+      "expected": "valid/comments_and_empty_containers.json"
+    },
+    {
+      "source": "valid/multiline_indentation.nano",
+      "expected": "valid/multiline_indentation.json"
     }
   ],
   "invalid": [
@@ -66,6 +78,10 @@
     {
       "source": "invalid/root_sequence_sibling.nano",
       "error": "E_SYNTAX"
+    },
+    {
+      "source": "invalid/comment_partial_indent.nano",
+      "error": "E_INDENT"
     }
   ]
 }

@@ -1,0 +1,5 @@
+# A comment-only document has no data entries.
+
+    # Comment indentation does not create a container.
+# The result is the default empty mapping.
+

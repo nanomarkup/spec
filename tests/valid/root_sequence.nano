@@ -1,5 +1,8 @@
+# Comments may surround the root marker and its items.
 :
+    # This comment is not an item.
     Math
+    "# literal hash"
     ".."
     ""
     ..
@@ -10,4 +13,4 @@
     |
         first line
         second line
-
+# This comment is outside the root sequence.
