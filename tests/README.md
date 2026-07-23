@@ -25,3 +25,8 @@ merely by opening the repository.
 
 See [COVERAGE.md](COVERAGE.md) for the rule-to-fixture matrix and
 [CONFORMANCE.md](../CONFORMANCE.md) for the decoder adapter protocol.
+
+`validate.py` checks manifest and fixture integrity without using an
+implementation. `run_conformance.py 'ADAPTER COMMAND'...` runs every decoder
+and writer case and cross-decodes every writer's output with every supplied
+adapter.

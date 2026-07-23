@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Validate Nano Markup conformance manifests without an implementation."""
 
 from __future__ import annotations
