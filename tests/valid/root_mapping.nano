@@ -1,11 +1,12 @@
 # Scalars remain strings.
-name Ariana
-age 12
-nickname
-unicode Žilina 🚲
-escaped "quote: \" slash: \\ newline:\n return:\r tab:\t"
-hash value # this is data
-pipe "|"
-dots ..
-colon :
-hash_start #literal hash
+..
+    name Ariana
+    age 12
+    nickname
+    unicode Žilina 🚲
+    escaped "quote: \" slash: \\ newline:\n return:\r tab:\t"
+    hash value # this is data
+    pipe "|"
+    dots ..
+    colon :
+    hash_start #literal hash

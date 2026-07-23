@@ -1,15 +1,15 @@
 # Comments never become mapping entries or sequence items.
-empty_mapping..
-    # This comment does not make the mapping nonempty.
-empty_sequence:
-    # This comment does not make the sequence nonempty.
-person..
-    # A comment may precede a real child.
-    name Ariana
-items:
-    # A comment may precede a sequence item.
-    one
-    # Or separate two items.
-    ..
-        # This mapping item is empty.
-
+..
+    empty_mapping..
+        # This comment does not make the mapping nonempty.
+    empty_sequence:
+        # This comment does not make the sequence nonempty.
+    person..
+        # A comment may precede a real child.
+        name Ariana
+    items:
+        # A comment may precede a sequence item.
+        one
+        # Or separate two items.
+        ..
+            # This mapping item is empty.

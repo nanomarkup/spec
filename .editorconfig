@@ -77,6 +77,15 @@ trim_trailing_whitespace = unset
 [tests/invalid/raw_trailing_space.nano]
 trim_trailing_whitespace = unset
 
+[tests/invalid/root_raw_trailing_space.nano]
+trim_trailing_whitespace = unset
+
+[tests/invalid/tab_indent.nano]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+
 [tests/invalid/tab_scalar.nano]
 charset = unset
 end_of_line = unset

@@ -1,6 +1,6 @@
 {
   "manifest_version": 1,
-  "specification": "0.4-draft",
+  "specification": "0.5-draft",
   "valid": [
     {
       "source": "valid/root_mapping.nano",
@@ -77,6 +77,54 @@
     {
       "source": "valid/key_scopes.nano",
       "expected": "valid/key_scopes.json"
+    },
+    {
+      "source": "valid/empty_root_mapping.nano",
+      "expected": "valid/empty_root_mapping.json"
+    },
+    {
+      "source": "valid/root_raw_string.nano",
+      "expected": "valid/root_raw_string.json"
+    },
+    {
+      "source": "valid/root_quoted_string.nano",
+      "expected": "valid/root_quoted_string.json"
+    },
+    {
+      "source": "valid/root_empty_string.nano",
+      "expected": "valid/root_empty_string.json"
+    },
+    {
+      "source": "valid/root_multiline_string.nano",
+      "expected": "valid/root_multiline_string.json"
+    },
+    {
+      "source": "valid/root_reserved_mapping_marker.nano",
+      "expected": "valid/root_reserved_mapping_marker.json"
+    },
+    {
+      "source": "valid/root_reserved_sequence_marker.nano",
+      "expected": "valid/root_reserved_sequence_marker.json"
+    },
+    {
+      "source": "valid/root_reserved_multiline_marker.nano",
+      "expected": "valid/root_reserved_multiline_marker.json"
+    },
+    {
+      "source": "valid/root_hash_string.nano",
+      "expected": "valid/root_hash_string.json"
+    },
+    {
+      "source": "valid/root_empty_multiline_string.nano",
+      "expected": "valid/root_empty_multiline_string.json"
+    },
+    {
+      "source": "valid/root_mapping_like_string.nano",
+      "expected": "valid/root_mapping_like_string.json"
+    },
+    {
+      "source": "valid/root_named_sequence_like_string.nano",
+      "expected": "valid/root_named_sequence_like_string.json"
     }
   ],
   "invalid": [
@@ -111,10 +159,6 @@
     {
       "source": "invalid/unterminated_quote.nano",
       "error": "E_STRING"
-    },
-    {
-      "source": "invalid/root_scalar.nano",
-      "error": "E_SYNTAX"
     },
     {
       "source": "invalid/root_sequence_sibling.nano",
@@ -199,6 +243,38 @@
     {
       "source": "invalid/error_precedence_tab.nano",
       "error": "E_TAB"
+    },
+    {
+      "source": "invalid/root_mapping_sibling.nano",
+      "error": "E_SYNTAX"
+    },
+    {
+      "source": "invalid/root_string_sibling.nano",
+      "error": "E_SYNTAX"
+    },
+    {
+      "source": "invalid/root_multiline_sibling.nano",
+      "error": "E_SYNTAX"
+    },
+    {
+      "source": "invalid/root_marker_indented.nano",
+      "error": "E_INDENT"
+    },
+    {
+      "source": "invalid/root_bad_escape.nano",
+      "error": "E_ESCAPE"
+    },
+    {
+      "source": "invalid/root_quoted_trailing_text.nano",
+      "error": "E_STRING"
+    },
+    {
+      "source": "invalid/root_raw_trailing_space.nano",
+      "error": "E_STRING"
+    },
+    {
+      "source": "invalid/root_string_indented.nano",
+      "error": "E_INDENT"
     }
   ]
 }

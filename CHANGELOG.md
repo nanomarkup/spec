@@ -2,6 +2,19 @@
 
 All normative changes to Nano Markup are recorded here.
 
+## 0.5-draft — 2026-07-23
+
+- Completed the root data model by allowing String, Mapping, and Sequence
+  values as document roots.
+- Replaced the implicit mapping root with the explicit `..` mapping marker;
+  root mapping entries are indented one level beneath it.
+- Made mapping-like level-zero text such as `name Ariana` or `colors:` a root
+  string; existing mapping documents must add `..` and indent their entries.
+- Defined direct raw and quoted root strings plus `|` root multiline strings,
+  including empty and reserved-string spellings.
+- Expanded and migrated the conformance corpus for explicit roots, root
+  strings, sibling rejection, and malformed root indentation.
+
 ## 0.4-draft — 2026-07-23
 
 - Distinguished the complete value model from document trees, whose roots are

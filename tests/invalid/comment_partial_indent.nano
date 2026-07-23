@@ -1,3 +1,3 @@
-person..
-  # Comment indentation must use complete levels.
-
+..
+    person..
+      # Comment indentation must use complete levels.

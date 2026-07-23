@@ -1,8 +1,8 @@
-# Nano Markup 0.4-draft
+# Nano Markup 0.5-draft
 
 ## 1. Status and conformance
 
-This document is the normative specification for Nano Markup 0.4-draft.
+This document is the normative specification for Nano Markup 0.5-draft.
 The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** are
 to be interpreted as requirement levels.
 
@@ -15,8 +15,8 @@ Nano Markup document that a conforming decoder reads as a data tree equivalent
 to the writer's input. A data writer is not required to reproduce comments,
 whitespace, quote choice, line endings, or mapping source order because those
 properties are not part of the data model.
-A writer given a string root or a value outside the Nano Markup data model MUST
-report an error rather than silently alter or omit that value.
+A writer given a value outside the Nano Markup data model MUST report an error
+rather than silently alter or omit that value.
 
 An implementation MAY additionally provide a source-preserving document API.
 Such an API is outside data conformance and must keep presentation metadata
@@ -36,10 +36,8 @@ A Nano Markup value is exactly one of:
 - **Sequence**: an ordered collection of values. Values in one sequence MAY
   have different types.
 
-A Nano Markup document tree is a Nano Markup value whose root is a Mapping or
-Sequence. A String is a value only within a Mapping or Sequence; it cannot be a
-document root. Every decoded document and every input accepted by a conforming
-data writer is therefore a document tree.
+A Nano Markup document tree is any Nano Markup value. Its root MAY therefore be
+a String, Mapping, or Sequence.
 
 String and key comparison is code-point exact and performs no Unicode
 normalization or case folding. Two mappings are equivalent when they contain
@@ -55,7 +53,7 @@ NOT change the decoded data tree.
 Consequently, data round-tripping and source round-tripping are different:
 
 - `decode(encode(tree))` MUST produce a data tree equivalent to `tree` for
-  every Nano Markup document tree accepted by the writer.
+  every Nano Markup value accepted by the writer.
 - `encode(decode(document))` is not required to reproduce the original source.
 
 Nano Markup does not infer nulls, booleans, numbers, dates, or any other scalar
@@ -119,14 +117,40 @@ The same key MAY occur in different mappings.
 
 An empty document represents an empty mapping.
 
-By default, top-level entries form an implicit mapping. A root sequence is
-written as a single `:` header at indentation level zero; all sequence items
-are its children. The root `:` MUST be the document's only top-level data
-entry. Blank lines and comments MAY appear before or after it.
+After blank and comment lines are ignored, a document root has exactly one of
+these forms at indentation level zero:
 
-A document cannot have a scalar root. A quoted line at the root, for example,
-is an attempted scalar root and produces `E_SYNTAX` rather than a mapping key.
-There is no alternate scalar-root spelling.
+```text
+..             mapping; entries are children at level one
+:              sequence; items are children at level one
+raw string     one-line string
+"quoted"       one-line quoted string
+|              multiline string; content begins at level one
+```
+
+The root value is the document's only top-level data entry. Blank lines and
+comments MAY appear before or after it. Any additional top-level data line is
+`E_SYNTAX`.
+
+An empty, whitespace-only, or comment-only document represents an empty
+mapping. Consequently, an empty root string MUST be written as `""`. The exact
+root strings `..`, `:`, and `|`, and a root string beginning with `#`, MUST be
+quoted because their unquoted forms are structural syntax or a comment.
+
+The root markers follow the anonymous container and multiline markers already
+used in sequences. A root mapping or sequence with no child data lines is
+empty. Comments do not make it nonempty.
+
+Only the exact tokens `..`, `:`, and `|` are recognized as root markers. For
+example, `colors:` and `name Ariana` at level zero are raw root strings, not
+mapping entries. A mapping containing a named sequence is written explicitly:
+
+```text
+..
+    colors:
+        red
+        green
+```
 
 ## 7. Mappings and sequences
 
@@ -182,17 +206,18 @@ defined in section 7.1.
 
 The spellings that require quoting in a scalar position are summarized here:
 
-| Scalar value | Mapping value | Sequence item |
-| --- | --- | --- |
-| empty string | bare key or `""` | `""` |
-| `|` | `"|"` | `"|"` |
-| `..` | `..` or `".."` | `".."` |
-| `:` | `:` or `":"` | `":"` |
-| begins with `#` | raw or quoted | quoted |
+| Scalar value | Document root | Mapping value | Sequence item |
+| --- | --- | --- | --- |
+| empty string | `""` | bare key or `""` | `""` |
+| `|` | `"|"` | `"|"` | `"|"` |
+| `..` | `".."` | `..` or `".."` | `".."` |
+| `:` | `":"` | `:` or `":"` | `":"` |
+| begins with `#` | quoted | raw or quoted | quoted |
 
 In the mapping column, `..` and `:` are values following the required key and
 separator; for example, `marker ..`. The forms `key..`, `key:`, and `key |`
-remain structural syntax.
+remain structural syntax. At the document root, `..`, `:`, and `|` are also
+structural and MUST be quoted when intended as strings.
 
 ### 8.2 Quoted strings
 
@@ -214,11 +239,12 @@ this draft.
 
 ### 8.3 Multiline strings
 
-A multiline string begins with `key |` in a mapping or `|` in a sequence. Its
-content is collected before the following physical lines are interpreted as
-comments or structural syntax. A nonblank content line must begin with at least
-one indentation level more than the block header. Exactly that required prefix
-is removed; every additional character, including spaces and `#`, is preserved.
+A multiline string begins with `key |` in a mapping or `|` at the document root
+or in a sequence. Its content is collected before the following physical lines
+are interpreted as comments or structural syntax. A nonblank content line must
+begin with at least one indentation level more than the block header. Exactly
+that required prefix is removed; every additional character, including spaces
+and `#`, is preserved.
 
 Blank physical lines encountered while collecting a block become empty content
 lines. Their behavior is:
@@ -269,8 +295,9 @@ Given this source document:
 
 ```text
 # User profile
-name Ariana
-age 12
+..
+    name Ariana
+    age 12
 ```
 
 a data decoder produces a mapping equivalent to:
@@ -285,8 +312,9 @@ a data decoder produces a mapping equivalent to:
 A data writer may later emit only:
 
 ```text
-name Ariana
-age 12
+..
+    name Ariana
+    age 12
 ```
 
 Losing the comment in this operation is expected presentation loss, not data
@@ -310,13 +338,19 @@ use any internal architecture that produces the same result.
 
 ### 10.2 Classify the root
 
-1. Ignore blank and comment lines while looking for the first data line.
+1. Validate indentation on comment lines, then ignore blank and comment lines
+   while looking for the first data line.
 2. If there is no data line, return an empty mapping.
-3. If the first data line is exactly `:` at indentation level zero, create a
-   root sequence and parse its children at level one. Any other top-level data
-   line after that sequence is `E_SYNTAX`.
-4. Otherwise, create an implicit root mapping and parse entries at level zero.
-   A top-level line that is only a scalar is `E_SYNTAX`.
+3. Require the first data line to have indentation level zero.
+4. If it is exactly `..`, create a root mapping and parse its children at level
+   one.
+5. If it is exactly `:`, create a root sequence and parse its children at level
+   one.
+6. If it is exactly `|`, collect a root multiline string using section 10.5.
+7. Otherwise, parse the complete line as one raw or quoted root string.
+8. After the root has ended, ignore validated blank and comment lines. A
+   remaining indented data line is `E_INDENT`; any remaining level-zero data
+   line is `E_SYNTAX`.
 
 ### 10.3 Parse indentation and containers
 
@@ -430,24 +464,23 @@ This representation does not add JSON typing to Nano Markup. For example,
 ## 13. Example
 
 ```text
-universities:
-    ..
-        name Harvard University
-        country USA
-        address |
-            Massachusetts Hall
-            Cambridge, MA 02138
-        students:
-            ..
-                name Mark
-                age 20
-                contacts..
-                    email mark@example.com
-                    mobile 12345678
+..
+    name Harvard University
+    country USA
+    address |
+        Massachusetts Hall
+        Cambridge, MA 02138
+    students:
+        ..
+            name Mark
+            age 20
+            contacts..
+                email mark@example.com
+                mobile 12345678
 ```
 
-The example represents a mapping whose `universities` value is a sequence.
-That sequence contains a mapping, and every scalar—including `20`—is a string.
+The example represents a root mapping. Every scalar—including `20`—is a
+string.
 
 ## 14. Deferred features
 

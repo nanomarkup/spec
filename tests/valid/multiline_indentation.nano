@@ -1,7 +1,7 @@
-description |
-    first line
-      two leading content spaces
-    # This is string data, not a comment.
+..
+    description |
+        first line
+          two leading content spaces
+        # This is string data, not a comment.
 # This is a comment outside the block.
-status done
-
+    status done

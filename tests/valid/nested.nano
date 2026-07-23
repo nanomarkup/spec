@@ -1,15 +1,15 @@
-universities:
-    ..
-        name Harvard University
-        country USA
-        address |
-            Massachusetts Hall
-            Cambridge, MA 02138
-        students:
-            ..
-                name Mark
-                age 20
-                contacts..
-                    email mark@example.com
-                    mobile 12345678
-
+..
+    universities:
+        ..
+            name Harvard University
+            country USA
+            address |
+                Massachusetts Hall
+                Cambridge, MA 02138
+            students:
+                ..
+                    name Mark
+                    age 20
+                    contacts..
+                        email mark@example.com
+                        mobile 12345678

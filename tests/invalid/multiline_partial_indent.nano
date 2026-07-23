@@ -1,4 +1,4 @@
-description |
-    valid content
-  invalid indentation after the block
-
+..
+    description |
+        valid content
+      invalid indentation after the block

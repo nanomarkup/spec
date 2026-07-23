@@ -1,12 +1,15 @@
-(* Nano Markup 0.4-draft lexical grammar over logical lines after line-ending
+(* Nano Markup 0.5-draft lexical grammar over logical lines after line-ending
    normalization. SPEC.md is normative. This grammar intentionally omits
    indentation stack processing, duplicate-key detection, block collection,
-   and semantic root constraints. The active container selects mapping-entry
-   or sequence-entry when those lexical forms overlap. *)
+   and semantic root constraints. The root nonterminal is selected for the
+   first data line; the active container selects mapping-entry or
+   sequence-entry when nested lexical forms overlap. *)
 
 document             = { logical-line } ;
 logical-line         = blank-line | comment-line | data-line ;
-data-line            = indentation, (mapping-entry | sequence-entry) ;
+data-line            = indentation, (root | mapping-entry | sequence-entry) ;
+
+root                 = ".." | ":" | "|" | scalar ;
 
 mapping-entry        = mapping-header
                      | sequence-header

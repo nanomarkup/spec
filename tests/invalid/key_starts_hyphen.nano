@@ -1,2 +1,3 @@
-person..
-    -name value
+..
+    person..
+        -name value

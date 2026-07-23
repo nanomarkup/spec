@@ -15,5 +15,7 @@ tests/invalid/error_precedence_tab.nano -text -eol
 tests/invalid/invalid_utf8.nano -text -eol
 tests/invalid/nul.nano -text -eol
 tests/invalid/raw_trailing_space.nano -text -eol
+tests/invalid/root_raw_trailing_space.nano -text -eol
+tests/invalid/tab_indent.nano -text -eol
 tests/invalid/tab_scalar.nano -text -eol
 tests/invalid/utf8_bom.nano -text -eol

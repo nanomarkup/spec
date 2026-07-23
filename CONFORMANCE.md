@@ -3,7 +3,7 @@
 ## Status
 
 This document defines protocol version 1 for testing a Nano Markup decoder
-against the `0.4-draft` fixture corpus. It is language-neutral test
+against the `0.5-draft` fixture corpus. It is language-neutral test
 infrastructure. JSON is used only to transport test results; it is not part of
 Nano Markup syntax or its public data format.
 
@@ -11,7 +11,7 @@ Production decoders belong in separate implementation repositories. An
 implementation should pin the specification repository to a tag or commit and
 must not modify the shared fixtures to make its own tests pass.
 
-The 0.4-draft defines this contract but does not ship a decoder, runner, or CI
+The 0.5-draft defines this contract but does not ship a decoder, runner, or CI
 workflow. Those may be added after an independent implementation exercises the
 protocol.
 
@@ -45,17 +45,15 @@ not run, crashed, timed out, or violated the protocol.
 }
 ```
 
-`value` must be a JSON object or array. It may recursively contain only JSON
-objects, arrays, and strings:
+`value` must recursively contain only JSON objects, arrays, and strings:
 
 - Nano Markup mapping → JSON object
 - Nano Markup sequence → JSON array
 - Nano Markup string → JSON string
 
 JSON numbers, booleans, and null are protocol violations. JSON object member
-order is ignored when results are compared. A top-level JSON string is also a
-protocol violation because a Nano Markup document tree cannot have a String
-root.
+order is ignored when results are compared. A top-level JSON string represents
+a Nano Markup String root.
 
 ## Language-error result
 

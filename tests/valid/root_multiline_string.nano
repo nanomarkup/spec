@@ -1,0 +1,6 @@
+# A comment may precede a root multiline string.
+|
+    First line
+    # This hash is string data.
+    Last line.
+# A comment may follow the root value.
