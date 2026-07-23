@@ -66,7 +66,9 @@ def validate_decoder_manifest() -> None:
         if path.is_file()
     }
     if fixtures != referenced:
-        fail(f"manifest.json: unreferenced={sorted(fixtures - referenced)}, missing={sorted(referenced - fixtures)}")
+        unreferenced = sorted(fixtures - referenced)
+        missing = sorted(referenced - fixtures)
+        fail(f"manifest.json: unreferenced={unreferenced}, missing={missing}")
 
 
 def validate_writer_manifest() -> None:
