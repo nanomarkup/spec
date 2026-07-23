@@ -1,0 +1,14 @@
+[
+  "Math",
+  "..",
+  "",
+  {
+    "name": "James",
+    "age": "20"
+  },
+  [
+    "inner"
+  ],
+  "first line\nsecond line"
+]
+

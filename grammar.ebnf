@@ -1,0 +1,62 @@
+(* Nano Markup 0.1-draft lexical grammar over logical lines after line-ending
+   normalization. SPEC.md is normative. This grammar intentionally omits
+   indentation stack processing, duplicate-key detection, block collection,
+   and semantic root constraints. The active container selects mapping-entry
+   or sequence-entry when those lexical forms overlap. *)
+
+document             = { logical-line } ;
+logical-line         = blank-line | comment-line | data-line ;
+data-line            = indentation, (mapping-entry | sequence-entry) ;
+
+mapping-entry        = mapping-header
+                     | sequence-header
+                     | block-header
+                     | scalar-entry
+                     | empty-entry ;
+
+mapping-header       = key, ".." ;
+sequence-header      = key, ":" ;
+block-header         = key, space, "|" ;
+scalar-entry         = key, space, scalar ;
+empty-entry          = key ;
+
+sequence-entry       = ".." | ":" | "|" | scalar ;
+scalar               = quoted-string | raw-string ;
+
+key                  = key-start, { key-continue } ;
+key-start            = letter | "_" ;
+key-continue         = letter | digit | "_" | "-" ;
+letter               = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H"
+                     | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P"
+                     | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X"
+                     | "Y" | "Z" | "a" | "b" | "c" | "d" | "e" | "f"
+                     | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n"
+                     | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v"
+                     | "w" | "x" | "y" | "z" ;
+digit                = "0" | "1" | "2" | "3" | "4"
+                     | "5" | "6" | "7" | "8" | "9" ;
+
+quoted-string        = '"', { quoted-character | escape }, '"' ;
+escape               = reverse-solidus,
+                       ('"' | reverse-solidus | "n" | "r" | "t") ;
+reverse-solidus      = ? U+005C REVERSE SOLIDUS ? ;
+quoted-character     = ? Unicode scalar value except quotation mark,
+                         reverse solidus, CR, LF, TAB, NUL, and controls ? ;
+
+raw-string           = raw-single
+                     | raw-first, { raw-character }, raw-last ;
+raw-single           = ? permitted raw character except ASCII space,
+                         quotation mark, controls, CR, LF, TAB, and NUL ? ;
+raw-first            = raw-single ;
+raw-last             = ? permitted raw character except ASCII space,
+                         controls, CR, LF, TAB, and NUL ? ;
+raw-character        = space
+                     | ? permitted Unicode scalar value except controls,
+                         CR, LF, TAB, and NUL ? ;
+
+comment-line         = indentation, "#", { comment-character } ;
+blank-line           = { space } ;
+indentation          = { "    " } ;
+space                = " " ;
+comment-character    = ? Unicode scalar value except CR, LF, TAB, NUL,
+                         and controls ? ;

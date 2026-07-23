@@ -1,0 +1,5 @@
+{
+  "description": "First paragraph.\n\n# This hash is block content.\nLast paragraph.",
+  "literal_hash": "# not a comment"
+}
+

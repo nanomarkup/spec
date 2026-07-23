@@ -1,0 +1,72 @@
+{
+  "specification": "0.1-draft",
+  "valid": [
+    {
+      "source": "valid/root_mapping.nano",
+      "expected": "valid/root_mapping.json"
+    },
+    {
+      "source": "valid/root_sequence.nano",
+      "expected": "valid/root_sequence.json"
+    },
+    {
+      "source": "valid/nested.nano",
+      "expected": "valid/nested.json"
+    },
+    {
+      "source": "valid/multiline_comments.nano",
+      "expected": "valid/multiline_comments.json"
+    },
+    {
+      "source": "valid/empty_containers.nano",
+      "expected": "valid/empty_containers.json"
+    },
+    {
+      "source": "valid/line_endings_crlf.nano",
+      "expected": "valid/line_endings_crlf.json"
+    }
+  ],
+  "invalid": [
+    {
+      "source": "invalid/duplicate_key.nano",
+      "error": "E_DUPLICATE_KEY"
+    },
+    {
+      "source": "invalid/illegal_key.nano",
+      "error": "E_KEY"
+    },
+    {
+      "source": "invalid/partial_indent.nano",
+      "error": "E_INDENT"
+    },
+    {
+      "source": "invalid/skipped_indent.nano",
+      "error": "E_INDENT"
+    },
+    {
+      "source": "invalid/tab_indent.nano",
+      "error": "E_TAB"
+    },
+    {
+      "source": "invalid/unexpected_indent.nano",
+      "error": "E_INDENT"
+    },
+    {
+      "source": "invalid/bad_escape.nano",
+      "error": "E_ESCAPE"
+    },
+    {
+      "source": "invalid/unterminated_quote.nano",
+      "error": "E_STRING"
+    },
+    {
+      "source": "invalid/root_scalar.nano",
+      "error": "E_SYNTAX"
+    },
+    {
+      "source": "invalid/root_sequence_sibling.nano",
+      "error": "E_SYNTAX"
+    }
+  ]
+}
+

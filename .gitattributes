@@ -1,0 +1,3 @@
+* text=auto eol=lf
+*.nano text eol=lf
+tests/valid/line_endings_crlf.nano -text -eol

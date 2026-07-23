@@ -1,0 +1,9 @@
+{
+  "name": "Ariana",
+  "age": "12",
+  "nickname": "",
+  "unicode": "Žilina 🚲",
+  "escaped": "quote: \" slash: \\ newline:\n tab:\t",
+  "hash": "value # this is data"
+}
+
