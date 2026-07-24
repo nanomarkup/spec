@@ -1,7 +1,8 @@
 # Contributing to the Nano Markup specification
 
-Nano Markup is currently an unstable draft. Clear problem statements and small,
-testable changes are preferred over adding features preemptively.
+Nano Markup is currently in its 1.0 release-candidate phase. Clear problem
+statements and small, testable changes are preferred over adding features
+preemptively.
 
 ## Proposing a change
 

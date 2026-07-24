@@ -1,0 +1,22 @@
+[
+  {
+    "sku": "book-001",
+    "title": "Nano Markup Guide",
+    "authors": [
+      "Ariana",
+      "Mark"
+    ],
+    "labels": []
+  },
+  {
+    "sku": "poster-002",
+    "title": "Syntax Reference",
+    "authors": [
+      "Sam"
+    ],
+    "labels": [
+      "documentation",
+      "printable"
+    ]
+  }
+]

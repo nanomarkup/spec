@@ -12,6 +12,7 @@
     "invalid/empty_after_separator.nano": "b43c41ae3674b1ce2f4da8189df9cc59308e50d41ef6bb13e1ab575ea881b96a",
     "invalid/error_precedence_encoding.nano": "5baface3bcce61f00af7b8a257e722404a7b5f77e15920e2117a51237ddb212d",
     "invalid/error_precedence_tab.nano": "d0247e0ccf13c937512a303c6ea64ba226db3053e14d4e62da90e7cd5b626f67",
+    "invalid/precedence_encoding_over_tab.nano": "d5189ef0c42583e36aee4145f951c5699ec06be8b038f27b7ac8866e7e392fc0",
     "invalid/invalid_utf8.nano": "20f193626cd41f7576821c44c54095d6e94a1c164cb3798dbea58648d45ca502",
     "invalid/nul.nano": "a86f8418e9a9fdf4bbad7d2d2fceb4bb96b8fba0fb54d699df241426023b2b6f",
     "invalid/raw_trailing_space.nano": "702a987162e01b6f6c79f49ab3aadd4f13f52e34aa7ee5e132ef1d34bdca4d49",
@@ -20,9 +21,19 @@
     "invalid/tab_scalar.nano": "fc9bd2c5581ac0979462362eba270079792b6a0cde356fb485aeb7ada28ee77a",
     "invalid/utf8_bom.nano": "81c1ad985206614c954368b7b5747cc845891c05d4068a8010cce83b0395d9d3",
     "valid/line_endings_crlf.nano": "adaebb8332bb10e4c36d5566ddd4546a80191daa34091ce904d08cf015dd3927",
+    "valid/interior_bom.json": "b9fb160f882242380b3cdb7f2ae0892424cc6b56c514552b7ceee0551884315f",
+    "valid/interior_bom.nano": "1709c425002fc57c286168f503665d58919fccf3dc15202eba89d588492f4f8a",
     "valid/line_endings_mixed.nano": "0d980268501ddd3774378eb5a8b3a99680d89eb2694b345951b86ecc5d878517",
-    "valid/multiline_line_endings.nano": "b48a68114e20657c22cf614f01f1ea86523a1da4a6911a2d37ae6924ba4ddd66",
+    "valid/multiline_line_endings.nano": "a852112d8588e801118d20518ce88b5122ae79b0418497697a57c0efb41e4bd7",
     "valid/no_final_newline.nano": "bb856dcd677522c2bddccbabc25befc98d9ad102dfde31844a4910c858abdd4c",
-    "valid/whitespace_only.nano": "2de69c6838d4decf93bbce4bd49e174def928b0fc3179792e923937252f2f8c5"
+    "valid/root_unicode_whitespace.json": "d47d5c4f18e5f0742c0e8315a93aa90e63b972099f9bc4955f13d95e0cb637a1",
+    "valid/root_unicode_whitespace.nano": "b53d7275c99a544541ac330df980134dedc52d3c227537a2637b0e30594c6ebd",
+    "valid/unicode_exactness.json": "c00694daf7f9e0568646cdf09fe5cb72b72142a539cd5e5e7f355791c4056453",
+    "valid/unicode_exactness.nano": "3ada16b7374c5ed0dca7f94e89e23eb2849225b1f82b88666407d34b0a567865",
+    "valid/unicode_whitespace_nested.json": "98133bc74ac69601367d3442db619bd1b9c428a9f4b6f8205bc98a975e5531ad",
+    "valid/unicode_whitespace_nested.nano": "f6a41507453dce39546317bb94ff9c2be04b78e8f03380c8e36004cb2e33f785",
+    "valid/whitespace_only.nano": "2de69c6838d4decf93bbce4bd49e174def928b0fc3179792e923937252f2f8c5",
+    "writer/valid/unicode.json": "0424fa5dc1fc93d5d1dd429a668bcb7a2affffc218208437f2174e45bbef17da",
+    "writer/valid/unicode_boundaries.json": "3dcb9857ebe1d1aa30342170833eff7cd475c5109c5cf25a2a5cc3550a75950c"
   }
 }

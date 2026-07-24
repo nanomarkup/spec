@@ -34,6 +34,8 @@ with `..`, or an explicit Sequence root marked with `:`.
 - [RELEASING.md](RELEASING.md) defines the independent specification release
   procedure.
 - [ERRATA.md](ERRATA.md) records known errors in immutable releases.
+- [releases](releases) contains reviewed release notes and interoperability
+  evidence.
 - [SECURITY.md](SECURITY.md) explains responsible security reporting.
 
 Comments and formatting are presentation metadata, not serialized data. A
@@ -41,7 +43,7 @@ normal data decoder may discard them; source-preserving editors may expose a
 separate document model. See the specification for the round-trip guarantees.
 
 Canonical serialization, schemas, references, includes, templates, and
-executable expressions are not part of this draft.
+executable expressions are outside Nano Markup 1.0.
 
 The specification repository intentionally contains no production decoder and
 no implementation-specific build system. Each language implementation belongs

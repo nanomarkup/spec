@@ -2,7 +2,7 @@
 
 ## Status
 
-This document defines protocol version 1 for testing a Nano Markup decoder
+This document defines protocol version 1 for testing Nano Markup decoders and writers
 against the `1.0.0-rc.1` fixture corpus. It is language-neutral test
 infrastructure. JSON is used only to transport test results; it is not part of
 Nano Markup syntax or its public data format.
@@ -91,9 +91,12 @@ For every `invalid` entry, the runner must require `ok: false` and compare the
 reported category with `error` in the manifest. A crash or protocol violation
 never counts as correctly rejecting a fixture.
 
-The runner must impose a documented timeout and must not allow an adapter to
-modify fixtures. Exact diagnostics, source ranges, and recovery after the first
-language error remain implementation-defined.
+The supplied runner imposes a five-second timeout on each adapter invocation.
+It records every normative fixture and informative example before invoking an
+adapter and fails if any of them changes. Operating-system sandboxing is
+recommended when running an untrusted adapter. Exact diagnostics, source
+ranges, and recovery after the first language error remain
+implementation-defined.
 
 ## Writers
 
@@ -113,11 +116,34 @@ object followed by LF. On success it has this shape:
 
 The runner decodes `source` with every conforming decoder, requires a tree
 equivalent to the JSON input, requires the requested physical line ending, and
-rejects literal tabs, inconsistent line endings, or an automatic final line
-ending. On an input outside the Nano Markup data model the adapter reports
+rejects literal tabs or inconsistent line endings. A writer MAY terminate its
+final physical line with the selected line ending. On an input outside the Nano Markup data model the adapter reports
 `{"ok": false, "error": "E_VALUE"}`. Protocol error names are test
 infrastructure and do not alter implementation-specific public exceptions.
 
 `tests/writer/manifest.json` lists round-trip and invalid writer inputs. JSON
 cannot represent cyclic containers or implementation-specific host values, so
 each implementation must test those cases in its native suite.
+
+## Manifest schemas
+
+All manifests are UTF-8 JSON objects. Unknown fields are forbidden so a typo
+cannot silently weaken the corpus. Object-member names must be unique, and
+JSON `NaN`, `Infinity`, and `-Infinity` extensions are forbidden.
+
+`tests/manifest.json` contains exactly `manifest_version`, `specification`,
+`valid`, and `invalid`. Each `valid` item contains exactly `source` and
+`expected`; each `invalid` item contains exactly `source` and `error`.
+
+`tests/writer/manifest.json` contains exactly `manifest_version`,
+`specification`, `round_trip`, and `invalid`. Each `round_trip` item contains
+exactly `value`; each `invalid` item contains exactly `value` and `error`.
+
+`examples/manifest.json` contains exactly `manifest_version`, `specification`,
+and `examples`. Each example contains exactly `source` and `expected`.
+
+`tests/byte-integrity.json` contains exactly `manifest_version`,
+`specification`, `algorithm`, and `files`. `algorithm` is `sha256`; `files` is
+an object from repository-relative fixture paths to lowercase hexadecimal
+SHA-256 digests. It must include every path marked `-text` in `.gitattributes`
+and may also protect other byte-sensitive fixtures.

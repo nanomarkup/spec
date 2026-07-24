@@ -6,7 +6,7 @@
     unicode Žilina 🚲
     escaped "quote: \" slash: \\ newline:\n return:\r tab:\t"
     hash value # this is data
-    pipe "|"
+    pipe |
     dots ..
     colon :
     hash_start #literal hash

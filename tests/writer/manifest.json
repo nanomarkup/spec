@@ -13,7 +13,10 @@
     {"value": "valid/mapping_reserved_strings.json"},
     {"value": "valid/root_space_only_lines.json"},
     {"value": "valid/nested_space_only_lines.json"},
-    {"value": "valid/unicode_boundaries.json"}
+    {"value": "valid/unicode_boundaries.json"},
+    {"value": "valid/root_empty_mapping.json"},
+    {"value": "valid/root_empty_sequence.json"},
+    {"value": "valid/empty_values.json"}
   ],
   "invalid": [
     {"value": "invalid/bad_key.json", "error": "E_VALUE"},

@@ -2,4 +2,4 @@
     mapping-marker ..
     sequence-marker :
     hash #data
-    bar "|"
+    bar |

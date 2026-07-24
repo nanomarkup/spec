@@ -74,6 +74,12 @@ end_of_line = unset
 insert_final_newline = unset
 trim_trailing_whitespace = unset
 
+[tests/invalid/precedence_encoding_over_tab.nano]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+
 [tests/invalid/invalid_utf8.nano]
 charset = unset
 end_of_line = unset

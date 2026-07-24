@@ -34,4 +34,13 @@ release_heading = rf"^## {re.escape(version)} — \d{{4}}-\d{{2}}-\d{{2}}$"
 if re.search(release_heading, changelog, re.MULTILINE) is None:
     raise SystemExit(f"CHANGELOG.md has no dated {version} release section")
 
+release_notes = REPOSITORY / "releases" / f"{version}.md"
+if not release_notes.is_file():
+    raise SystemExit(f"missing releases/{version}.md")
+notes_heading = release_notes.read_text(encoding="utf-8").splitlines()[0]
+if notes_heading != f"# Nano Markup {version}":
+    raise SystemExit(f"releases/{version}.md does not identify {version}")
+if "PENDING" in release_notes.read_text(encoding="utf-8"):
+    raise SystemExit(f"releases/{version}.md still contains pending evidence")
+
 print(f"release metadata is consistent for {tag}")

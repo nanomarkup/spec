@@ -1,0 +1,9 @@
+# Empty strings and containers are distinct values
+..
+    bare_empty
+    quoted_empty ""
+    empty_mapping..
+    empty_sequence:
+    empty_multiline|
+    nested..
+        present value

@@ -161,6 +161,14 @@
     {
       "source": "valid/empty_containers_and_siblings.nano",
       "expected": "valid/empty_containers_and_siblings.json"
+    },
+    {
+      "source": "valid/interior_bom.nano",
+      "expected": "valid/interior_bom.json"
+    },
+    {
+      "source": "valid/mapping_suffix_values.nano",
+      "expected": "valid/mapping_suffix_values.json"
     }
   ],
   "invalid": [
@@ -346,7 +354,7 @@
     },
     {
       "source": "invalid/double_space_block_header.nano",
-      "error": "E_KEY"
+      "error": "E_STRING"
     },
     {
       "source": "invalid/near_mapping_header.nano",
@@ -363,6 +371,18 @@
     {
       "source": "invalid/empty_sequence_key_marker.nano",
       "error": "E_KEY"
+    },
+    {
+      "source": "invalid/precedence_encoding_over_tab.nano",
+      "error": "E_ENCODING"
+    },
+    {
+      "source": "invalid/malformed_multiline_header.nano",
+      "error": "E_KEY"
+    },
+    {
+      "source": "invalid/legacy_multiline_header_child.nano",
+      "error": "E_INDENT"
     }
   ]
 }

@@ -4,6 +4,9 @@ All normative changes to Nano Markup are recorded here.
 
 ## 1.0.0-rc.1 — 2026-07-24
 
+- Changed mapping multiline headers from `key |` to `key|`, making `|`
+  consistent with the attached `..` and `:` structural markers. Consequently,
+  `key |` now represents the ordinary string `|`.
 - Defined the normative release contents and versioned decoder and writer
   conformance claims independently from implementation repositories.
 - Added explicit BCP 14, UTF-8, and Unicode terminology references and a
@@ -25,6 +28,16 @@ All normative changes to Nano Markup are recorded here.
   errata procedures, security reporting guidance, and tag-release automation.
 - Updated the conformance documentation to match the shipped runner and writer
   protocol.
+- Defined document values as finite acyclic trees, clarified that only a
+  leading UTF-8 signature is forbidden, and made malformed mapping-line
+  classification deterministic.
+- Hardened manifest validation and adapter framing, documented the five-second
+  timeout, and extended mutation detection to informative examples.
+- Added interior-U+FEFF, encoding-over-tab, mapping-suffix, multiline-marker,
+  empty-root writer, and empty-value fixtures, bringing the shared corpus to
+  112 cases.
+- Added four practical JSON/Nano example pairs covering project configuration,
+  record sequences, string spellings, and empty values.
 
 ## 0.5-draft — 2026-07-23
 

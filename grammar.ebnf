@@ -19,7 +19,7 @@ mapping-entry        = mapping-header
 
 mapping-header       = key, ".." ;
 sequence-header      = key, ":" ;
-block-header         = key, space, "|" ;
+block-header         = key, "|" ;
 scalar-entry         = key, space, scalar ;
 empty-entry          = key ;
 

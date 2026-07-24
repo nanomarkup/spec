@@ -1,0 +1,14 @@
+{
+  "name": "nano-markup",
+  "version": "1.0.0-rc.1",
+  "source-directories": [
+    "src",
+    "tests",
+    "examples"
+  ],
+  "package": {
+    "license": "CC-BY-4.0",
+    "homepage": "https://github.com/nohainc/nanomarkup.spec"
+  },
+  "summary": "A minimal, human-readable\nstructured data format."
+}

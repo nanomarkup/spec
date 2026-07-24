@@ -1,7 +1,7 @@
 # Informative example: a mapping root
 ..
     name Ariana
-    address |
+    address|
         Massachusetts Hall
         Cambridge, MA 02138
     contacts..

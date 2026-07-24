@@ -55,8 +55,10 @@ A Nano Markup value is exactly one of:
 - **Sequence**: an ordered collection of values. Values in one sequence MAY
   have different types.
 
-A Nano Markup document tree is any Nano Markup value. Its root MAY therefore be
-a String, Mapping, or Sequence.
+A Nano Markup document tree is a finite, acyclic tree of Nano Markup values.
+Its root MAY therefore be a String, Mapping, or Sequence. Reusing the same
+host-language container in multiple positions is permitted when it does not
+form a cycle; Nano Markup defines values, not object identity or references.
 
 For this specification, a Unicode scalar value is an integer from U+0000
 through U+10FFFF other than the surrogate range U+D800 through U+DFFF.
@@ -90,7 +92,9 @@ specification.
 
 The conventional file extension for a Nano Markup source document is `.nano`.
 
-A document MUST be UTF-8 without a byte-order mark. Invalid UTF-8 and literal
+A document MUST be UTF-8 without a leading byte-order mark (the UTF-8 signature
+bytes EF BB BF). U+FEFF appearing after the first source byte is ordinary
+string data. Invalid UTF-8 and literal
 U+0000 through U+0008, U+000B through U+000C, U+000E through U+001F, or U+007F
 through U+009F are errors. Literal TAB is handled separately below. Literal CR
 and LF are permitted only as physical line endings as defined below.
@@ -192,12 +196,13 @@ Within a mapping, one data line has one of these forms:
 ```text
 key value    raw or quoted string
 key          empty string
-key |        multiline string
+key|         multiline string
 key..        nested mapping
 key:         nested sequence
 ```
 
-The separator between a key and a scalar or `|` is exactly one ASCII space.
+The separator between a key and a scalar is exactly one ASCII space.
+`key|`, like `key..` and `key:`, has no separator before its structural marker.
 Additional leading or trailing spaces in an unquoted value are errors and must
 instead be represented with a quoted string.
 
@@ -240,13 +245,13 @@ The spellings that require quoting in a scalar position are summarized here:
 | Scalar value | Document root | Mapping value | Sequence item |
 | --- | --- | --- | --- |
 | empty string | `""` | bare key or `""` | `""` |
-| `|` | `"|"` | `"|"` | `"|"` |
+| `|` | `"|"` | `|` or `"|"` | `"|"` |
 | `..` | `".."` | `..` or `".."` | `".."` |
 | `:` | `":"` | `:` or `":"` | `":"` |
 | begins with `#` | quoted | raw or quoted | quoted |
 
 In the mapping column, `..` and `:` are values following the required key and
-separator; for example, `marker ..`. The forms `key..`, `key:`, and `key |`
+separator; for example, `marker ..`. The forms `key..`, `key:`, and `key|`
 remain structural syntax. At the document root, `..`, `:`, and `|` are also
 structural and MUST be quoted when intended as strings.
 
@@ -266,11 +271,11 @@ position. It supports exactly these escapes:
 Other escapes, missing closing quotes, trailing text after the closing quote,
 unescaped TAB, CR, or LF, and Unicode scalar values excluded by section 2 are
 errors. Unicode text is written directly as UTF-8; `\u` escapes are not part of
-this draft.
+Nano Markup 1.0.
 
 ### 8.3 Multiline strings
 
-A multiline string begins with `key |` in a mapping or `|` at the document root
+A multiline string begins with `key|` in a mapping or `|` at the document root
 or in a sequence. Its content is collected before the following physical lines
 are interpreted as comments or structural syntax. A nonblank content line must
 begin with at least one indentation level more than the block header. Exactly
@@ -358,7 +363,7 @@ use any internal architecture that produces the same result.
 
 ### 10.1 Prepare physical lines
 
-1. Decode the input as UTF-8 and reject a byte-order mark, invalid byte
+1. Decode the input as UTF-8 and reject a leading UTF-8 signature, invalid byte
    sequence, U+0000 through U+0008, U+000B through U+000C, U+000E through
    U+001F, or U+007F through U+009F with `E_ENCODING`.
 2. Reject a literal tab anywhere with `E_TAB`.
@@ -408,13 +413,27 @@ exists.
 
 ### 10.4 Recognize syntax lines
 
-In a mapping, after indentation is removed, recognize a line in this order:
+In a mapping, after indentation is removed, classify a line deterministically
+in this order:
 
-1. Exact `key..`: nested mapping.
-2. Exact `key:`: nested sequence.
-3. Exact `key |`: multiline string.
-4. Exact `key`: empty string.
-5. Exact `key`, one ASCII space, then a raw or quoted scalar.
+1. If the line contains no ASCII space and ends with `..`, remove that suffix
+   and treat the remainder as the candidate key for a nested mapping.
+2. Otherwise, if the line contains no ASCII space and ends with `:`, remove
+   that suffix and treat the remainder as the candidate key for a nested
+   sequence.
+3. Otherwise, if the line contains no ASCII space and ends with `|`, remove
+   that suffix and treat the remainder as the candidate key for a multiline
+   string.
+4. Otherwise, if the line contains no ASCII space, treat the complete line as
+   the candidate key for an empty string.
+5. Otherwise, split at the first ASCII space. The prefix is the candidate key
+   and the complete remainder is a raw or quoted scalar candidate.
+
+After classification, validate the candidate key before validating its value.
+Thus `name|` is a multiline header, `name |` is the scalar value `|`, and
+`name value |` is the scalar value `value |`. The line `name  |` is a scalar
+candidate whose value begins with an ASCII space and is `E_STRING`; `name ` is
+a scalar candidate with an empty scalar and is also `E_STRING`.
 
 In a sequence, recognize a line in this order:
 
@@ -452,7 +471,7 @@ presentation metadata are not inserted into the result.
 
 Conformance fixtures use these stable error categories:
 
-- `E_ENCODING`: invalid UTF-8, a byte-order mark, a bare CR, or a forbidden
+- `E_ENCODING`: invalid UTF-8, a leading UTF-8 signature, a bare CR, or a forbidden
   control character.
 - `E_TAB`: a literal tab anywhere in the source.
 - `E_INDENT`: partial, skipped, mixed, or unexpected indentation.
@@ -504,7 +523,7 @@ This representation does not add JSON typing to Nano Markup. For example,
 ..
     name Harvard University
     country USA
-    address |
+    address|
         Massachusetts Hall
         Cambridge, MA 02138
     students:
@@ -521,7 +540,7 @@ string.
 
 ## 14. Deferred features
 
-This draft does not define canonical serialization, schemas, references,
+Nano Markup 1.0 does not define canonical serialization, schemas, references,
 aliases, includes, templates, executable expressions, or application-specific
 type conversion. Such features require a later specification revision.
 

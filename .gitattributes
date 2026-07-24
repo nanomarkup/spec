@@ -14,6 +14,7 @@ tests/invalid/del_control.nano -text -eol
 tests/invalid/empty_after_separator.nano -text -eol
 tests/invalid/error_precedence_encoding.nano -text -eol
 tests/invalid/error_precedence_tab.nano -text -eol
+tests/invalid/precedence_encoding_over_tab.nano -text -eol
 tests/invalid/invalid_utf8.nano -text -eol
 tests/invalid/nul.nano -text -eol
 tests/invalid/raw_trailing_space.nano -text -eol

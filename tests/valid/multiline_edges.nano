@@ -1,21 +1,21 @@
 ..
-    leading |
+    leading|
 
         first
-    internal |
+    internal|
         first
 
         second
-    trailing |
+    trailing|
         last
 
 
-    symbols |
+    symbols|
         # string data
         :
         ..
         |
         "quoted"
           two leading content spaces
-    empty |
+    empty|
     status done

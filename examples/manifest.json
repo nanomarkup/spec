@@ -4,6 +4,10 @@
   "examples": [
     {"source": "profile.nano", "expected": "profile.json"},
     {"source": "colors.nano", "expected": "colors.json"},
-    {"source": "root-string.nano", "expected": "root-string.json"}
+    {"source": "root-string.nano", "expected": "root-string.json"},
+    {"source": "project.nano", "expected": "project.json"},
+    {"source": "catalog.nano", "expected": "catalog.json"},
+    {"source": "text-values.nano", "expected": "text-values.json"},
+    {"source": "empty-values.nano", "expected": "empty-values.json"}
   ]
 }

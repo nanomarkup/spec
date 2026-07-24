@@ -1,0 +1,13 @@
+# Raw, quoted, escaped, and multiline strings
+..
+    raw Human-readable text
+    hash # this is data, not an inline comment
+    marker_dots ..
+    marker_colon :
+    marker_bar |
+    padded "  spaces are preserved  "
+    escaped "first line\nsecond line\tindented"
+    multilingual Dobrý deň — こんにちは
+    paragraph|
+        Multiline text keeps internal newlines.
+        A # character here is also data.

@@ -11,14 +11,37 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
+TIMEOUT_SECONDS = 5
 
 
 def fixture_hashes() -> dict[Path, str]:
-    return {
+    normative = {
         path: hashlib.sha256(path.read_bytes()).hexdigest()
         for path in ROOT.rglob("*")
         if path.is_file() and path.suffix in {".nano", ".json"}
     }
+    examples = ROOT.parent / "examples"
+    normative.update(
+        {
+            path: hashlib.sha256(path.read_bytes()).hexdigest()
+            for path in examples.iterdir()
+            if path.is_file() and path.suffix in {".nano", ".json"}
+        }
+    )
+    return normative
+
+
+def unique_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    result: dict[str, object] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON object member {key!r}")
+        result[key] = value
+    return result
+
+
+def reject_constant(value: str) -> None:
+    raise ValueError(f"non-standard JSON constant {value}")
 
 
 def invoke(command: list[str], *arguments: str) -> dict[str, object]:
@@ -26,25 +49,31 @@ def invoke(command: list[str], *arguments: str) -> dict[str, object]:
         [*command, *arguments],
         check=False,
         capture_output=True,
-        text=True,
-        timeout=5,
+        timeout=TIMEOUT_SECONDS,
     )
     if result.returncode != 0:
-        raise SystemExit(f"adapter failed: {result.stderr.strip()}")
+        diagnostics = result.stderr.decode("utf-8", errors="replace").strip()
+        raise SystemExit(f"adapter failed: {diagnostics}")
     try:
-        payload = json.loads(result.stdout)
-    except json.JSONDecodeError as error:
-        raise SystemExit(f"adapter returned invalid JSON: {error}") from None
+        output = result.stdout.decode("utf-8")
+        if not output.endswith("\n"):
+            raise ValueError("result is not terminated by LF")
+        body = output[:-1]
+        decoder = json.JSONDecoder(
+            object_pairs_hook=unique_object,
+            parse_constant=reject_constant,
+        )
+        payload, end = decoder.raw_decode(body)
+        if end != len(body):
+            raise ValueError("bytes follow the JSON object before the final LF")
+    except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as error:
+        raise SystemExit(f"adapter returned invalid framed JSON: {error}") from None
     if not isinstance(payload, dict):
         raise SystemExit("adapter result is not an object")
     return payload
 
 
-def main() -> None:
-    if len(sys.argv) < 2:
-        raise SystemExit("usage: run_conformance.py 'ADAPTER COMMAND'...")
-    original_hashes = fixture_hashes()
-    adapters = [shlex.split(argument) for argument in sys.argv[1:]]
+def run(adapters: list[list[str]]) -> None:
     decoder_manifest = json.loads((ROOT / "manifest.json").read_text())
     for adapter in adapters:
         for case in decoder_manifest["valid"]:
@@ -77,12 +106,18 @@ def main() -> None:
                 if set(payload) != {"ok", "source"} or payload["ok"] is not True:
                     raise SystemExit(f"writer failed for {case['value']}: {payload}")
                 source = payload["source"]
-                if not isinstance(source, str) or source.endswith(("\n", "\r")):
-                    raise SystemExit("writer emitted an invalid terminal line ending")
+                if not isinstance(source, str) or "\t" in source:
+                    raise SystemExit(
+                        "writer emitted a non-string source or literal tab"
+                    )
                 if newline_name == "LF" and "\r" in source:
                     raise SystemExit("LF writer emitted CR")
-                if newline_name == "CRLF" and "\n" in source.replace("\r\n", ""):
-                    raise SystemExit("CRLF writer emitted a bare LF")
+                if newline_name == "CRLF":
+                    remainder = source.replace("\r\n", "")
+                    if "\r" in remainder or "\n" in remainder:
+                        raise SystemExit(
+                            "CRLF writer emitted an inconsistent line ending"
+                        )
                 with tempfile.NamedTemporaryFile(suffix=".nano") as temporary:
                     temporary.write(source.encode())
                     temporary.flush()
@@ -96,9 +131,24 @@ def main() -> None:
             payload = invoke(writer, "write", str(writer_root / case["value"]), "LF")
             if payload != {"ok": False, "error": case["error"]}:
                 raise SystemExit(f"writer accepted {case['value']}: {payload}")
-    if fixture_hashes() != original_hashes:
-        raise SystemExit("an adapter modified the conformance fixtures")
-    print(f"{len(adapters)} adapters passed decoder, writer, and cross-read conformance")
+    print(
+        f"{len(adapters)} adapters passed decoder, writer, and cross-read conformance"
+    )
+
+
+def main() -> None:
+    if len(sys.argv) < 2:
+        raise SystemExit("usage: run_conformance.py 'ADAPTER COMMAND'...")
+    original_hashes = fixture_hashes()
+    try:
+        run([shlex.split(argument) for argument in sys.argv[1:]])
+    except subprocess.TimeoutExpired as error:
+        raise SystemExit(
+            f"adapter timed out after {TIMEOUT_SECONDS} seconds: {error.cmd}"
+        ) from None
+    finally:
+        if fixture_hashes() != original_hashes:
+            raise SystemExit("an adapter modified a conformance fixture or example")
 
 
 main()
