@@ -1,10 +1,15 @@
 {
   "manifest_version": 1,
-  "specification": "0.5-draft",
+  "specification": "0.6-draft",
   "round_trip": [
     {"value": "valid/scalars.json"},
     {"value": "valid/containers.json"},
-    {"value": "valid/unicode.json"}
+    {"value": "valid/unicode.json"},
+    {"value": "valid/root_empty_string.json"},
+    {"value": "valid/root_reserved_string.json"},
+    {"value": "valid/root_space_only_lines.json"},
+    {"value": "valid/nested_space_only_lines.json"},
+    {"value": "valid/unicode_boundaries.json"}
   ],
   "invalid": [
     {"value": "invalid/bad_key.json", "error": "E_VALUE"},

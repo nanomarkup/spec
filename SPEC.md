@@ -1,8 +1,8 @@
-# Nano Markup 0.5-draft
+# Nano Markup 0.6-draft
 
 ## 1. Status and conformance
 
-This document is the normative specification for Nano Markup 0.5-draft.
+This document is the normative specification for Nano Markup 0.6-draft.
 The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** are
 to be interpreted as requirement levels.
 
@@ -97,9 +97,12 @@ comment line need not correspond to an open container, because its indentation
 is presentation metadata, but its indentation is validated before the comment
 is ignored.
 
-After the required structural prefix has been removed, multiline block content
-MAY begin with any number of additional ASCII spaces. Those spaces are string
-data and do not have to form complete indentation levels.
+After the required structural prefix has been removed, a nonblank multiline
+content line MAY begin with any number of additional ASCII spaces. Those spaces
+are string data and do not have to form complete indentation levels. A physical
+line containing only ASCII spaces remains a blank line regardless of its width;
+a writer MUST use quoted syntax when a string contains a logical line made only
+of spaces.
 
 A child is indented exactly one level more than its parent header. A dedent ends
 the current container and returns to the matching earlier level.

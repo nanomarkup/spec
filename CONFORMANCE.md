@@ -3,7 +3,7 @@
 ## Status
 
 This document defines protocol version 1 for testing a Nano Markup decoder
-against the `0.5-draft` fixture corpus. It is language-neutral test
+against the `0.6-draft` fixture corpus. It is language-neutral test
 infrastructure. JSON is used only to transport test results; it is not part of
 Nano Markup syntax or its public data format.
 
@@ -11,9 +11,9 @@ Production decoders belong in separate implementation repositories. An
 implementation should pin the specification repository to a tag or commit and
 must not modify the shared fixtures to make its own tests pass.
 
-The 0.5-draft defines this contract but does not ship a decoder, runner, or CI
-workflow. Those may be added after an independent implementation exercises the
-protocol.
+The specification repository ships a language-neutral runner and CI integrity
+checks but no production decoder. Independent implementations exercise the
+protocol by supplying their adapters to `tests/run_conformance.py`.
 
 ## Adapter invocation
 

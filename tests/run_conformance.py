@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import shlex
 import subprocess
@@ -10,6 +11,14 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
+
+
+def fixture_hashes() -> dict[Path, str]:
+    return {
+        path: hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in ROOT.rglob("*")
+        if path.is_file() and path.suffix in {".nano", ".json"}
+    }
 
 
 def invoke(command: list[str], *arguments: str) -> dict[str, object]:
@@ -34,6 +43,7 @@ def invoke(command: list[str], *arguments: str) -> dict[str, object]:
 def main() -> None:
     if len(sys.argv) < 2:
         raise SystemExit("usage: run_conformance.py 'ADAPTER COMMAND'...")
+    original_hashes = fixture_hashes()
     adapters = [shlex.split(argument) for argument in sys.argv[1:]]
     decoder_manifest = json.loads((ROOT / "manifest.json").read_text())
     for adapter in adapters:
@@ -78,6 +88,8 @@ def main() -> None:
             payload = invoke(writer, "write", str(writer_root / case["value"]), "LF")
             if payload != {"ok": False, "error": case["error"]}:
                 raise SystemExit(f"writer accepted {case['value']}: {payload}")
+    if fixture_hashes() != original_hashes:
+        raise SystemExit("an adapter modified the conformance fixtures")
     print(f"{len(adapters)} adapters passed decoder, writer, and cross-read conformance")
 
 

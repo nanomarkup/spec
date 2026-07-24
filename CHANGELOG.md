@@ -2,6 +2,15 @@
 
 All normative changes to Nano Markup are recorded here.
 
+## 0.6-draft — Unreleased
+
+- Clarified that ASCII-space-only physical lines remain blank inside multiline
+  blocks and require quoted writer output when their spaces are string data.
+- Expanded writer coverage for root strings, space-only logical lines, Unicode
+  boundaries, and nested mapping and sequence contexts.
+- Updated the conformance documentation to match the shipped runner and writer
+  protocol.
+
 ## 0.5-draft — 2026-07-23
 
 - Clarified that only empty or ASCII-space-only physical lines are blank;

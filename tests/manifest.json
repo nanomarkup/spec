@@ -1,6 +1,6 @@
 {
   "manifest_version": 1,
-  "specification": "0.5-draft",
+  "specification": "0.6-draft",
   "valid": [
     {
       "source": "valid/root_mapping.nano",
