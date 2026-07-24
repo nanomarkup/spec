@@ -24,6 +24,8 @@ with `..`, or an explicit Sequence root marked with `:`.
 - [CONFORMANCE.md](CONFORMANCE.md) defines the language-neutral JSON adapter
   protocol used to test independent decoders.
 - [tests/COVERAGE.md](tests/COVERAGE.md) maps normative behavior to fixtures.
+- [tests/REQUIREMENTS.md](tests/REQUIREMENTS.md) traces every normative
+  requirement to conformance evidence or implementation review.
 - [CHANGELOG.md](CHANGELOG.md) records specification changes.
 - [CONTRIBUTING.md](CONTRIBUTING.md) explains how to propose changes.
 - [VERSIONING.md](VERSIONING.md) defines draft, release-candidate, and stable

@@ -133,6 +133,34 @@
     {
       "source": "valid/unicode_whitespace_nested.nano",
       "expected": "valid/unicode_whitespace_nested.json"
+    },
+    {
+      "source": "valid/unicode_exactness.nano",
+      "expected": "valid/unicode_exactness.json"
+    },
+    {
+      "source": "valid/near_markers_sequence.nano",
+      "expected": "valid/near_markers_sequence.json"
+    },
+    {
+      "source": "valid/comments_arbitrary_indent.nano",
+      "expected": "valid/comments_arbitrary_indent.json"
+    },
+    {
+      "source": "valid/raw_internal_spaces.nano",
+      "expected": "valid/raw_internal_spaces.json"
+    },
+    {
+      "source": "valid/mapping_scalar_markers.nano",
+      "expected": "valid/mapping_scalar_markers.json"
+    },
+    {
+      "source": "valid/multiple_level_dedent.nano",
+      "expected": "valid/multiple_level_dedent.json"
+    },
+    {
+      "source": "valid/empty_containers_and_siblings.nano",
+      "expected": "valid/empty_containers_and_siblings.json"
     }
   ],
   "invalid": [
@@ -206,6 +234,14 @@
     },
     {
       "source": "invalid/control_character.nano",
+      "error": "E_ENCODING"
+    },
+    {
+      "source": "invalid/control_u000b.nano",
+      "error": "E_ENCODING"
+    },
+    {
+      "source": "invalid/control_u000e.nano",
       "error": "E_ENCODING"
     },
     {
@@ -283,6 +319,50 @@
     {
       "source": "invalid/root_string_indented.nano",
       "error": "E_INDENT"
+    },
+    {
+      "source": "invalid/precedence_indent_over_syntax.nano",
+      "error": "E_INDENT"
+    },
+    {
+      "source": "invalid/precedence_syntax_over_key.nano",
+      "error": "E_SYNTAX"
+    },
+    {
+      "source": "invalid/precedence_key_over_duplicate.nano",
+      "error": "E_KEY"
+    },
+    {
+      "source": "invalid/precedence_duplicate_over_escape.nano",
+      "error": "E_DUPLICATE_KEY"
+    },
+    {
+      "source": "invalid/precedence_escape_over_string.nano",
+      "error": "E_ESCAPE"
+    },
+    {
+      "source": "invalid/double_space_separator.nano",
+      "error": "E_STRING"
+    },
+    {
+      "source": "invalid/double_space_block_header.nano",
+      "error": "E_KEY"
+    },
+    {
+      "source": "invalid/near_mapping_header.nano",
+      "error": "E_KEY"
+    },
+    {
+      "source": "invalid/near_sequence_header.nano",
+      "error": "E_KEY"
+    },
+    {
+      "source": "invalid/empty_mapping_key_marker.nano",
+      "error": "E_KEY"
+    },
+    {
+      "source": "invalid/empty_sequence_key_marker.nano",
+      "error": "E_KEY"
     }
   ]
 }

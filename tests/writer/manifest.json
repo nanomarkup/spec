@@ -7,6 +7,10 @@
     {"value": "valid/unicode.json"},
     {"value": "valid/root_empty_string.json"},
     {"value": "valid/root_reserved_string.json"},
+    {"value": "valid/root_reserved_sequence_string.json"},
+    {"value": "valid/root_reserved_multiline_string.json"},
+    {"value": "valid/root_hash_string.json"},
+    {"value": "valid/mapping_reserved_strings.json"},
     {"value": "valid/root_space_only_lines.json"},
     {"value": "valid/nested_space_only_lines.json"},
     {"value": "valid/unicode_boundaries.json"}

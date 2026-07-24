@@ -8,6 +8,8 @@ tests/valid/whitespace_only.nano -text -eol
 tests/invalid/bare_cr.nano -text -eol
 tests/invalid/c1_control.nano -text -eol
 tests/invalid/control_character.nano -text -eol
+tests/invalid/control_u000b.nano -text -eol
+tests/invalid/control_u000e.nano -text -eol
 tests/invalid/del_control.nano -text -eol
 tests/invalid/empty_after_separator.nano -text -eol
 tests/invalid/error_precedence_encoding.nano -text -eol

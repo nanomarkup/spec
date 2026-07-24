@@ -8,6 +8,13 @@ All normative changes to Nano Markup are recorded here.
   blocks and require quoted writer output when their spaces are string data.
 - Expanded writer coverage for root strings, space-only logical lines, Unicode
   boundaries, and nested mapping and sequence contexts.
+- Expanded decoder coverage for every adjacent error-priority pair, Unicode
+  exactness, syntax lookalikes, separator boundaries, and arbitrary comment
+  indentation.
+- Added explicit fixtures for multiple-level dedents and empty containers
+  followed by siblings at different nesting depths.
+- Added a normative requirement traceability index and documented native
+  writer checks that cannot be represented by the JSON protocol.
 - Updated the conformance documentation to match the shipped runner and writer
   protocol.
 

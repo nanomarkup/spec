@@ -1,0 +1,9 @@
+            # comments need not correspond to an open container
+# root follows comments
+..
+    child..
+                    # deeper complete indentation is presentation metadata
+        value present
+    empty:
+                # this comment does not create an item
+    sibling done
