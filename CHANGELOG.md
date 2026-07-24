@@ -2,7 +2,27 @@
 
 All normative changes to Nano Markup are recorded here.
 
+## 1.0.0 — 2026-07-24
+
+- Approved the complete three-type language, normative parsing algorithm,
+  error model, and conformance protocols as the stable Nano Markup 1.0
+  compatibility commitment.
+- Completed a release audit using the full 112-case shared corpus, native
+  implementation tests, randomized round trips, deep-nesting and cycle checks,
+  race detection, fuzzing, cross-reading, and clean Python package artifacts.
+- Replaced the mandatory elapsed release-candidate period with a documented
+  review and interoperability approval gate; release candidates remain
+  available when a future release benefits from an observation period.
+- Reworked the repository README as a user-facing introduction with a paired
+  Nano Markup and JSON example, a three-type data-model summary, a compact
+  syntax guide, and clear paths for users, implementers, and contributors.
+- Refined the inline multiline-address example and regenerated the informative
+  HTML specification.
+
 ## 1.0.0-rc.1 — 2026-07-24
+
+This release candidate existed through commit `680ea16`. It was reviewed but
+never tagged or released and was superseded directly by stable `1.0.0`.
 
 - Added concise inline examples throughout the normative Markdown and a
   deterministic, responsive `SPEC.html` browser rendering. `SPEC.md` remains
@@ -32,8 +52,7 @@ All normative changes to Nano Markup are recorded here.
 ## 0.6-draft — 2026-07-24
 
 This draft existed through commit `c74d806`. It was never tagged or released
-and was superseded by `1.0.0-rc.1`; its work remains part of the release
-candidate.
+and was superseded by `1.0.0-rc.1`; its work remains part of stable `1.0.0`.
 
 - Clarified that ASCII-space-only physical lines remain blank inside multiline
   blocks and require quoted writer output when their spaces are string data.

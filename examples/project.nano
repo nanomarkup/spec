@@ -1,7 +1,7 @@
 # A project configuration
 ..
     name nano-markup
-    version 1.0.0-rc.1
+    version 1.0.0
     source-directories:
         src
         tests

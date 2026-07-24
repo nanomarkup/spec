@@ -1,4 +1,4 @@
-# Nano Markup 1.0.0-rc.1 conformance coverage
+# Nano Markup 1.0.0 conformance coverage
 
 This matrix maps normative behavior to the fixture corpus. A row may group
 closely related requirements from one specification section. Expected JSON

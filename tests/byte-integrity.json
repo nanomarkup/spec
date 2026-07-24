@@ -1,6 +1,6 @@
 {
   "manifest_version": 1,
-  "specification": "1.0.0-rc.1",
+  "specification": "1.0.0",
   "algorithm": "sha256",
   "files": {
     "invalid/bare_cr.nano": "45cc49da0b7167fdfa55e14a743b0be3e38aa378b1698ad851ced3ed085b9bf7",

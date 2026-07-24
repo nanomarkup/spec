@@ -36,11 +36,12 @@ environment and needs permission to create GitHub releases.
 
 ## Tag and publish
 
-Create and push an annotated tag only after the release commit is on `main`:
+Create and push an annotated tag only after the release commit is on `main`.
+For Nano Markup 1.0.0:
 
 ```console
-git tag -a v1.0.0-rc.1 -m "Nano Markup 1.0.0-rc.1"
-git push origin v1.0.0-rc.1
+git tag -a v1.0.0 -m "Nano Markup 1.0.0"
+git push origin v1.0.0
 ```
 
 The tag workflow repeats validation, builds `.tar.gz` and `.zip` archives with
@@ -53,18 +54,21 @@ Only after the specification release succeeds should implementations update
 their pinned specification commit and publish corresponding implementation
 versions.
 
-## Promoting a release candidate to stable 1.0
+## Approving a stable release
 
-Keep `v1.0.0-rc.1` available for compatibility testing for at least 30 days.
-During that period, exercise it through independent implementations and example
-applications. Resolve all correctness, security, and interoperability release
-blockers. Any semantic change that invalidates an RC document or changes its
-tree requires a subsequent RC and restarts the 30-day period.
+Stable approval requires a documented review of the complete normative text,
+the requirement-to-evidence map, decoder and writer behavior, release
+artifacts, and outstanding correctness, security, and interoperability issues.
+At least two separate implementations must pass the complete shared protocol
+and cross-read one another's output. Record the reviewed implementation commits
+and the resulting evidence in the release notes.
 
-After a clean compatibility period, change the specification identity and all
-manifests to `1.0.0`, add a dated changelog section, repeat every prerequisite
-above, and publish the specification tag `v1.0.0`. Matching implementation
-`1.0.0` releases follow only after that specification release succeeds.
+A release candidate and an elapsed observation period are optional. When the
+required review and interoperability evidence are complete, no unresolved
+release blocker remains, and the maintainers accept the compatibility promise,
+the specification may proceed directly to a stable release. Matching stable
+implementation releases follow only after the stable specification release
+succeeds.
 
 ## Immutability and corrections
 

@@ -10,7 +10,7 @@ from typing import NoReturn
 
 ROOT = Path(__file__).resolve().parent
 REPOSITORY = ROOT.parent
-SPECIFICATION = "1.0.0-rc.1"
+SPECIFICATION = "1.0.0"
 KEY = re.compile(r"[A-Za-z_][A-Za-z0-9_-]*\Z")
 SHA256 = re.compile(r"[0-9a-f]{64}\Z")
 FORBIDDEN_SCALARS = {

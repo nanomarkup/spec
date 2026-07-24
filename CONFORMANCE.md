@@ -3,7 +3,7 @@
 ## Status
 
 This document defines protocol version 1 for testing Nano Markup decoders and writers
-against the `1.0.0-rc.1` fixture corpus. It is language-neutral test
+against the `1.0.0` fixture corpus. It is language-neutral test
 infrastructure. JSON is used only to transport test results; it is not part of
 Nano Markup syntax or its public data format.
 

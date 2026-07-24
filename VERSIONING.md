@@ -8,12 +8,18 @@ Known mistakes in an immutable release are recorded in `ERRATA.md`. Errata are
 informative notices, not silent amendments to a tag. Any correction that
 changes normative behavior is published under a new version.
 
-A proposed stable release is tagged `v1.0.0-rc.1`. Release candidates may
-receive compatible corrections. A change that invalidates a conforming RC
-document or changes its decoded tree requires another RC and restarts the
-compatibility period. Each RC compatibility period lasts at least 30 days.
-Stable `v1.0.0` is not published while any known correctness, security, or
-interoperability release blocker remains unresolved.
+Pre-release development may use release-candidate versions such as
+`1.0.0-rc.1`. Release candidates are optional and may receive compatible
+corrections. A change that invalidates a conforming RC document or changes its
+decoded tree requires another RC if RC testing continues.
+
+A stable release requires a documented review of the normative text and
+requirement coverage, successful decoder and writer interoperability evidence
+from at least two separate implementations, clean release artifacts, and no
+known correctness, security, or interoperability blockers. No minimum elapsed
+time is required after that evidence is complete. A project may still choose a
+longer observation period when the scope or risk of a future release warrants
+one.
 
 Stable `1.x` releases preserve accepted source syntax, decoded data trees,
 error categories, and conformance protocol compatibility. Additive

@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="Nano Markup tools/render_spec.py">
-  <meta name="source-sha256" content="55947e3ee1db3dcde87d62f459b4cefbf2a00026b77f9680acc215b042bf5fe2">
-  <title>Nano Markup 1.0.0-rc.1</title>
+  <meta name="source-sha256" content="d98aafcc349d891bbb59d823f184f0a132f2dc9473f41e3ea2bf62ca5d3f159a">
+  <title>Nano Markup 1.0.0</title>
   <style>
     :root { color-scheme: light dark; --paper: #ffffff; --ink: #17202a;
       --muted: #586174; --line: #d8dee8; --accent: #3157a4;
@@ -70,10 +70,10 @@
       <aside class="notice"><strong>Informative HTML rendering.</strong>
         <a href="SPEC.md">SPEC.md</a> at the corresponding immutable Git tag
         is the normative specification.</aside>
-      <h1 id="nano-markup-1-0-0-rc-1">Nano Markup 1.0.0-rc.1</h1>
+      <h1 id="nano-markup-1-0-0">Nano Markup 1.0.0</h1>
 <h2 id="1-status-and-conformance">1. Status and conformance</h2>
 <p>This document is the normative language specification for Nano Markup
-1.0.0-rc.1. The key words <strong>MUST</strong>, <strong>MUST NOT</strong>, <strong>SHOULD</strong>, <strong>SHOULD NOT</strong>, and
+1.0.0. The key words <strong>MUST</strong>, <strong>MUST NOT</strong>, <strong>SHOULD</strong>, <strong>SHOULD NOT</strong>, and
 <strong>MAY</strong> are to be interpreted as described in BCP 14, RFC 2119 and RFC 8174,
 when, and only when, they appear in all capitals.</p>
 <p>One released specification version consists of the files at one immutable Git
@@ -101,7 +101,7 @@ rather than silently alter or omit that value.</p>
 <p>Conformance is claimed separately for the <strong>decoder</strong> and <strong>writer</strong> profiles.
 An implementation may claim either profile or both, but a claim MUST identify
 the exact specification version and every claimed profile. For example:
-<code>Nano Markup 1.0.0-rc.1 decoder and writer</code>. Partial support within a claimed
+<code>Nano Markup 1.0.0 decoder and writer</code>. Partial support within a claimed
 profile is not conforming. Passing the shared fixtures is required but does not
 replace compliance with normative behavior for inputs not enumerated by the
 finite corpus.</p>
@@ -416,11 +416,11 @@ has no special meaning. A nonblank line with less than the required content
 prefix ends the block and is parsed normally. If that line's indentation is not
 valid in the surrounding structure, parsing subsequently produces <code>E_INDENT</code>.</p>
 <p>For example, this value decodes to
-<code>&quot;Lisova 20\nIndex 1111&quot;</code> without an implicit final LF:</p>
+<code>&quot;20 Forest Street\n811 01 Bratislava&quot;</code> without an implicit final LF:</p>
 <pre><code class="language-nano">..
     address|
-        Lisova 20
-        Index 1111
+        20 Forest Street
+        811 01 Bratislava
 </code></pre>
 <h2 id="9-comments">9. Comments</h2>
 <p>Outside multiline blocks, a line whose first non-indentation character is <code>#</code>
@@ -658,7 +658,7 @@ limited to assigned characters in that Unicode version.</li>
 </ul>
 
       <footer>Generated deterministically from <code>SPEC.md</code>.
-        Source SHA-256: <code>55947e3ee1db3dcde87d62f459b4cefbf2a00026b77f9680acc215b042bf5fe2</code>.</footer>
+        Source SHA-256: <code>d98aafcc349d891bbb59d823f184f0a132f2dc9473f41e3ea2bf62ca5d3f159a</code>.</footer>
     </main>
   </div>
 </body>

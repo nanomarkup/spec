@@ -1,4 +1,4 @@
-# Nano Markup 1.0.0-rc.1 requirement traceability
+# Nano Markup 1.0.0 requirement traceability
 
 This index maps each normative `MUST`, `MUST NOT`, and `SHOULD` in `SPEC.md`
 to conformance evidence. Algorithm steps inherit the `MUST behave as if`

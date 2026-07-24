@@ -1,9 +1,9 @@
-# Nano Markup 1.0.0-rc.1
+# Nano Markup 1.0.0
 
 ## 1. Status and conformance
 
 This document is the normative language specification for Nano Markup
-1.0.0-rc.1. The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and
+1.0.0. The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and
 **MAY** are to be interpreted as described in BCP 14, RFC 2119 and RFC 8174,
 when, and only when, they appear in all capitals.
 
@@ -36,7 +36,7 @@ rather than silently alter or omit that value.
 Conformance is claimed separately for the **decoder** and **writer** profiles.
 An implementation may claim either profile or both, but a claim MUST identify
 the exact specification version and every claimed profile. For example:
-`Nano Markup 1.0.0-rc.1 decoder and writer`. Partial support within a claimed
+`Nano Markup 1.0.0 decoder and writer`. Partial support within a claimed
 profile is not conforming. Passing the shared fixtures is required but does not
 replace compliance with normative behavior for inputs not enumerated by the
 finite corpus.
@@ -379,13 +379,13 @@ prefix ends the block and is parsed normally. If that line's indentation is not
 valid in the surrounding structure, parsing subsequently produces `E_INDENT`.
 
 For example, this value decodes to
-`"Lisova 20\nIndex 1111"` without an implicit final LF:
+`"20 Forest Street\n811 01 Bratislava"` without an implicit final LF:
 
 ```nano
 ..
     address|
-        Lisova 20
-        Index 1111
+        20 Forest Street
+        811 01 Bratislava
 ```
 
 ## 9. Comments
