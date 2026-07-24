@@ -114,10 +114,18 @@ def render(markdown: str) -> str:
       overflow-wrap: anywhere; }}
     footer {{ border-top: 1px solid var(--line); color: var(--muted); margin-top: 4rem;
       padding-top: 1rem; font-size: .85rem; overflow-wrap: anywhere; }}
-    @media (max-width: 800px) {{ .layout {{ display: block; padding: 1.5rem 1rem 4rem; }}
-      nav {{ position: static; max-height: none; margin-bottom: 2rem; }} nav .level-3 {{ display: none; }} }}
-    @media print {{ nav {{ display: none; }} .layout {{ display: block; max-width: none; padding: 0; }}
-      body {{ color: #000; background: #fff; }} a {{ color: inherit; }} pre {{ white-space: pre-wrap; }} }}
+    @media (max-width: 800px) {{
+      .layout {{ display: block; padding: 1.5rem 1rem 4rem; }}
+      nav {{ position: static; max-height: none; margin-bottom: 2rem; }}
+      nav .level-3 {{ display: none; }}
+    }}
+    @media print {{
+      nav {{ display: none; }}
+      .layout {{ display: block; max-width: none; padding: 0; }}
+      body {{ color: #000; background: #fff; }}
+      a {{ color: inherit; }}
+      pre {{ white-space: pre-wrap; }}
+    }}
   </style>
 </head>
 <body>
