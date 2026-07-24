@@ -1,4 +1,4 @@
-(* Nano Markup 0.6-draft lexical grammar over logical lines after line-ending
+(* Nano Markup 1.0.0-rc.1 lexical grammar over logical lines after line-ending
    normalization. SPEC.md is normative. This grammar intentionally omits
    indentation stack processing, duplicate-key detection, block collection,
    and semantic root constraints. The root nonterminal is selected for the

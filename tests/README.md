@@ -23,11 +23,17 @@ significant trailing whitespace. Git text normalization is disabled for those
 paths. Tools must read `.nano` fixtures as raw bytes and must not rewrite them
 merely by opening the repository.
 
+`byte-integrity.json` records SHA-256 hashes for every fixture protected with
+`-text` in `.gitattributes`. `validate.py` requires the two lists to agree and
+verifies every byte before a release.
+
 See [COVERAGE.md](COVERAGE.md) for the rule-to-fixture matrix,
 [REQUIREMENTS.md](REQUIREMENTS.md) for normative requirement traceability,
 and [CONFORMANCE.md](../CONFORMANCE.md) for the decoder adapter protocol.
 
-`validate.py` checks manifest and fixture integrity without using an
-implementation. `run_conformance.py 'ADAPTER COMMAND'...` runs every decoder
-and writer case and cross-decodes every writer's output with every supplied
+`validate.py` checks specification identity, manifests, expected tree types,
+byte integrity, and informative-example completeness without using an
+implementation. `validate_links.py` checks repository-local Markdown links.
+`run_conformance.py 'ADAPTER COMMAND'...` runs every decoder, writer, and
+example case and cross-decodes every writer's output with every supplied
 adapter.

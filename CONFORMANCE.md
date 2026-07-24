@@ -1,11 +1,18 @@
-# Nano Markup decoder conformance protocol
+# Nano Markup conformance protocol
 
 ## Status
 
 This document defines protocol version 1 for testing a Nano Markup decoder
-against the `0.6-draft` fixture corpus. It is language-neutral test
+against the `1.0.0-rc.1` fixture corpus. It is language-neutral test
 infrastructure. JSON is used only to transport test results; it is not part of
 Nano Markup syntax or its public data format.
+
+Protocol version 1 supports the decoder and writer conformance profiles. A
+conformance claim identifies the exact Nano Markup specification version and
+the profiles exercised. The specification version in both manifests must
+match the claimed version. The protocol and its JSON result shapes are
+normative for reporting fixture results; they do not define language syntax or
+an implementation's public API.
 
 Production decoders belong in separate implementation repositories. An
 implementation should pin the specification repository to a tag or commit and
@@ -67,6 +74,12 @@ a Nano Markup String root.
 `error` must be one of the categories defined by the pinned specification.
 Additional fields are not permitted in protocol version 1, ensuring that test
 results remain comparable across implementation languages.
+
+The protocol reports only an error category. The specification's rule for
+choosing the earliest error within one category therefore requires native
+implementation testing or review in protocol version 1; an adapter cannot
+demonstrate it by adding a position field because additional fields are a
+protocol violation.
 
 ## Runner behavior
 

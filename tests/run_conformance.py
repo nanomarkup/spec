@@ -57,6 +57,14 @@ def main() -> None:
             if payload != {"ok": False, "error": case["error"]}:
                 raise SystemExit(f"decoder mismatch for {case['source']}: {payload}")
 
+        examples_root = ROOT.parent / "examples"
+        examples_manifest = json.loads((examples_root / "manifest.json").read_text())
+        for case in examples_manifest["examples"]:
+            expected = json.loads((examples_root / case["expected"]).read_text())
+            payload = invoke(adapter, "parse", str(examples_root / case["source"]))
+            if payload != {"ok": True, "value": expected}:
+                raise SystemExit(f"example mismatch for {case['source']}: {payload}")
+
     writer_root = ROOT / "writer"
     writer_manifest = json.loads((writer_root / "manifest.json").read_text())
     for writer in adapters:

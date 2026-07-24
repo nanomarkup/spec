@@ -2,8 +2,14 @@
 
 All normative changes to Nano Markup are recorded here.
 
-## 0.6-draft — Unreleased
+## 1.0.0-rc.1 — 2026-07-24
 
+- Defined the normative release contents and versioned decoder and writer
+  conformance claims independently from implementation repositories.
+- Added explicit BCP 14, UTF-8, and Unicode terminology references and a
+  version-independent definition of Unicode scalar values.
+- Clarified that protocol version 1 transports error categories but not source
+  positions, leaving earliest-position verification to native tests and review.
 - Clarified that ASCII-space-only physical lines remain blank inside multiline
   blocks and require quoted writer output when their spaces are string data.
 - Expanded writer coverage for root strings, space-only logical lines, Unicode
@@ -15,6 +21,8 @@ All normative changes to Nano Markup are recorded here.
   followed by siblings at different nesting depths.
 - Added a normative requirement traceability index and documented native
   writer checks that cannot be represented by the JSON protocol.
+- Added byte-sensitive fixture checksums, informative examples, release and
+  errata procedures, security reporting guidance, and tag-release automation.
 - Updated the conformance documentation to match the shipped runner and writer
   protocol.
 

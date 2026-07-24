@@ -1,4 +1,4 @@
-# Nano Markup 0.6-draft requirement traceability
+# Nano Markup 1.0.0-rc.1 requirement traceability
 
 This index maps each normative `MUST`, `MUST NOT`, and `SHOULD` in `SPEC.md`
 to conformance evidence. Algorithm steps inherit the `MUST behave as if`
@@ -20,6 +20,7 @@ Evidence types are:
 | CONF-DECODER | A conforming decoder accepts every valid fixture with the expected tree and rejects every invalid fixture with its required category. | Fixture manifest and language-neutral conformance runner. |
 | CONF-WRITER | A conforming writer accepts every Nano Markup tree and emits an equivalent decodable tree. | All writer round trips, both newline modes, and cross-decoding by every supplied adapter. |
 | CONF-REJECT | A writer rejects values outside the data model without alteration or omission. | Writer invalid cases; native tests for cyclic containers, unsupported host values, invalid keys, forbidden string scalars, and null/nil equivalents. |
+| CONF-CLAIM | A conformance claim identifies the exact specification version and every claimed decoder or writer profile. | Release metadata and implementation public-version/API review. |
 | MODEL-COMMENT | Adding or removing a comment outside a multiline string does not change the tree. | `comment_only`, `comments_and_empty_containers`, `comments_arbitrary_indent`, `multiline_comments`. |
 | MODEL-ROUNDTRIP | `decode(encode(tree))` is equivalent to `tree` for every accepted value. | Writer protocol round trips and cross-reader checks; native randomized round trips. |
 | SOURCE-UTF8 | Source is UTF-8 without BOM and excludes the specified literal control ranges. | `utf8_bom`, `invalid_utf8`, `nul`, `control_character`, `control_u000b`, `control_u000e`, `del_control`, `c1_control`; valid boundaries in `unicode_exactness`. |
@@ -45,7 +46,7 @@ Evidence types are:
 | PARSE-MULTILINE | Section 10.5 collection, blank-line, indentation, and LF-joining rules are observed. | All multiline fixtures, including edge, indentation, line-ending, comment-looking content, Unicode-whitespace, and space-only writer cases. |
 | PARSE-TREE | Section 10.6 preserves raw/multiline data, decodes only quoted escapes, and omits presentation metadata. | Raw, quoted, multiline, comment, and `unicode_exactness` fixtures. |
 | ERROR-PRIORITY | Multiple errors report `ENCODING > TAB > INDENT > SYNTAX > KEY > DUPLICATE_KEY > ESCAPE > STRING`. | `error_precedence_encoding`, `error_precedence_tab`, and all `precedence_*` fixtures cover every adjacent pair. |
-| ERROR-EARLIEST | Within one category, the earliest offending source byte is reported. | Native diagnostic tests and adapter review; exact positions are outside the fixture protocol. |
+| ERROR-EARLIEST | Within one category, the earliest offending source byte is reported. | Native diagnostic tests and adapter review; protocol version 1 intentionally transports no position. |
 | SECURITY-NO-EXEC | Parsing comments, keys, and values never changes parser configuration or invokes code. | Implementation security review; no executable extension points are defined by the syntax or public data APIs. |
 | LIMITS-DOCUMENTED | Any resource limits and their errors are documented; duplicate-key checks also apply to untrusted input. | Implementation README/API review plus duplicate-key fixtures and native deep-nesting/fuzz tests. |
 

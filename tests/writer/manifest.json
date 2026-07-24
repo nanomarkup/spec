@@ -1,6 +1,6 @@
 {
   "manifest_version": 1,
-  "specification": "0.6-draft",
+  "specification": "1.0.0-rc.1",
   "round_trip": [
     {"value": "valid/scalars.json"},
     {"value": "valid/containers.json"},

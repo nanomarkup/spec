@@ -1,0 +1,8 @@
+# Informative example: a mapping root
+..
+    name Ariana
+    address |
+        Massachusetts Hall
+        Cambridge, MA 02138
+    contacts..
+        email ariana@example.com

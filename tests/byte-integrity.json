@@ -1,0 +1,28 @@
+{
+  "manifest_version": 1,
+  "specification": "1.0.0-rc.1",
+  "algorithm": "sha256",
+  "files": {
+    "invalid/bare_cr.nano": "45cc49da0b7167fdfa55e14a743b0be3e38aa378b1698ad851ced3ed085b9bf7",
+    "invalid/c1_control.nano": "440e02a2237a10add4d000199859a6c93d75a3c3de6477031dfe0d8c9fc71fbb",
+    "invalid/control_character.nano": "878c0b7567b0e8e88c0e176ea85c49e36c0f05e55e183134a96a89a8c4cac998",
+    "invalid/control_u000b.nano": "3496f12e56f2fee10a7e7c95e5b17e452c145710ffe00d350560582904a2496b",
+    "invalid/control_u000e.nano": "3f578cb0d6fd2013d5036b3d49b3eca88c952b228b6d2b0751f7d749dff29f68",
+    "invalid/del_control.nano": "49f8badd0bb319b98bc2338be07eddab95eceb67deefac813ecc57006ac4841f",
+    "invalid/empty_after_separator.nano": "b43c41ae3674b1ce2f4da8189df9cc59308e50d41ef6bb13e1ab575ea881b96a",
+    "invalid/error_precedence_encoding.nano": "5baface3bcce61f00af7b8a257e722404a7b5f77e15920e2117a51237ddb212d",
+    "invalid/error_precedence_tab.nano": "d0247e0ccf13c937512a303c6ea64ba226db3053e14d4e62da90e7cd5b626f67",
+    "invalid/invalid_utf8.nano": "20f193626cd41f7576821c44c54095d6e94a1c164cb3798dbea58648d45ca502",
+    "invalid/nul.nano": "a86f8418e9a9fdf4bbad7d2d2fceb4bb96b8fba0fb54d699df241426023b2b6f",
+    "invalid/raw_trailing_space.nano": "702a987162e01b6f6c79f49ab3aadd4f13f52e34aa7ee5e132ef1d34bdca4d49",
+    "invalid/root_raw_trailing_space.nano": "a4cfc596d52c95b51ab28b4def04f83da35cd3a4c6db1b6001d4d0fa41809221",
+    "invalid/tab_indent.nano": "697c95abfaf907c7842cf4d9a9d8375346c48500d57b56c20e2d99ef0dc882c2",
+    "invalid/tab_scalar.nano": "fc9bd2c5581ac0979462362eba270079792b6a0cde356fb485aeb7ada28ee77a",
+    "invalid/utf8_bom.nano": "81c1ad985206614c954368b7b5747cc845891c05d4068a8010cce83b0395d9d3",
+    "valid/line_endings_crlf.nano": "adaebb8332bb10e4c36d5566ddd4546a80191daa34091ce904d08cf015dd3927",
+    "valid/line_endings_mixed.nano": "0d980268501ddd3774378eb5a8b3a99680d89eb2694b345951b86ecc5d878517",
+    "valid/multiline_line_endings.nano": "b48a68114e20657c22cf614f01f1ea86523a1da4a6911a2d37ae6924ba4ddd66",
+    "valid/no_final_newline.nano": "bb856dcd677522c2bddccbabc25befc98d9ad102dfde31844a4910c858abdd4c",
+    "valid/whitespace_only.nano": "2de69c6838d4decf93bbce4bd49e174def928b0fc3179792e923937252f2f8c5"
+  }
+}

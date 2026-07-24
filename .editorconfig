@@ -35,6 +35,18 @@ end_of_line = unset
 insert_final_newline = unset
 trim_trailing_whitespace = unset
 
+[tests/invalid/control_u000b.nano]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+
+[tests/invalid/control_u000e.nano]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+
 [tests/invalid/c1_control.nano]
 charset = unset
 end_of_line = unset

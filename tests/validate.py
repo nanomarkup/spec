@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 from typing import NoReturn
 
 ROOT = Path(__file__).resolve().parent
+REPOSITORY = ROOT.parent
+SPECIFICATION = "1.0.0-rc.1"
 
 
 def fail(message: str) -> NoReturn:
@@ -27,7 +30,23 @@ def load_json(path: Path) -> object:
     try:
         return json.loads(path.read_text(encoding="utf-8"))
     except (OSError, UnicodeError, json.JSONDecodeError) as error:
-        fail(f"{path.relative_to(ROOT)}: {error}")
+        fail(f"{path.relative_to(REPOSITORY)}: {error}")
+
+
+def validate_specification_identity() -> None:
+    heading = (REPOSITORY / "SPEC.md").read_text(encoding="utf-8").splitlines()[0]
+    if heading != f"# Nano Markup {SPECIFICATION}":
+        fail("SPEC.md: heading does not match the release specification")
+    manifests = (
+        ROOT / "manifest.json",
+        ROOT / "writer" / "manifest.json",
+        ROOT / "byte-integrity.json",
+        REPOSITORY / "examples" / "manifest.json",
+    )
+    for path in manifests:
+        manifest = load_json(path)
+        if not isinstance(manifest, dict) or manifest.get("specification") != SPECIFICATION:
+            fail(f"{path.relative_to(REPOSITORY)}: specification version mismatch")
 
 
 def validate_decoder_manifest() -> None:
@@ -97,6 +116,59 @@ def validate_writer_manifest() -> None:
         fail("writer/manifest.json does not reference every writer fixture exactly once")
 
 
+def validate_byte_integrity() -> None:
+    manifest = load_json(ROOT / "byte-integrity.json")
+    if (
+        not isinstance(manifest, dict)
+        or manifest.get("manifest_version") != 1
+        or manifest.get("algorithm") != "sha256"
+        or not isinstance(manifest.get("files"), dict)
+    ):
+        fail("byte-integrity.json: invalid manifest")
+    files = manifest["files"]
+    assert isinstance(files, dict)
+    protected = {
+        fields[0].removeprefix("tests/")
+        for line in (REPOSITORY / ".gitattributes").read_text(encoding="utf-8").splitlines()
+        if len(fields := line.split()) >= 2 and "-text" in fields[1:]
+    }
+    if set(files) != protected:
+        fail("byte-integrity.json: entries do not match .gitattributes -text paths")
+    for relative, expected in files.items():
+        if not isinstance(relative, str) or not isinstance(expected, str):
+            fail("byte-integrity.json: paths and hashes must be strings")
+        path = ROOT / relative
+        if not path.is_file():
+            fail(f"byte-integrity.json: missing {relative}")
+        actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        if actual != expected:
+            fail(f"byte-integrity.json: checksum mismatch for {relative}")
+
+
+def validate_examples() -> None:
+    root = REPOSITORY / "examples"
+    manifest = load_json(root / "manifest.json")
+    if not isinstance(manifest, dict) or manifest.get("manifest_version") != 1:
+        fail("examples/manifest.json: unsupported manifest version")
+    referenced: set[str] = set()
+    for case in manifest.get("examples", []):
+        for field in ("source", "expected"):
+            relative = case[field]
+            if relative in referenced or not (root / relative).is_file():
+                fail(f"examples/manifest.json: invalid reference {relative}")
+            referenced.add(relative)
+        if not is_tree(load_json(root / case["expected"])):
+            fail(f"examples/{case['expected']}: expected value is not a Nano Markup tree")
+    example_files = {
+        path.name for path in root.iterdir() if path.suffix in {".nano", ".json"}
+    } - {"manifest.json"}
+    if example_files != referenced:
+        fail("examples/manifest.json does not reference every example exactly once")
+
+
+validate_specification_identity()
 validate_decoder_manifest()
 validate_writer_manifest()
-print("conformance manifests are valid")
+validate_byte_integrity()
+validate_examples()
+print("specification identity, manifests, byte integrity, and examples are valid")

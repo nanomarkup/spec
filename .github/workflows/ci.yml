@@ -16,4 +16,5 @@ jobs:
         with:
           python-version: "3.14"
       - run: python tests/validate.py
+      - run: python tests/validate_links.py
       - run: git diff --exit-code

@@ -1,14 +1,25 @@
-# Nano Markup 0.6-draft
+# Nano Markup 1.0.0-rc.1
 
 ## 1. Status and conformance
 
-This document is the normative specification for Nano Markup 0.6-draft.
-The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** are
-to be interpreted as requirement levels.
+This document is the normative language specification for Nano Markup
+1.0.0-rc.1. The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and
+**MAY** are to be interpreted as described in BCP 14, RFC 2119 and RFC 8174,
+when, and only when, they appear in all capitals.
 
-A conforming data decoder MUST accept every valid conformance fixture, produce
-the specified data tree, and reject every invalid fixture with the specified
-error category. Exact diagnostic wording is implementation-defined.
+One released specification version consists of the files at one immutable Git
+tag. `SPEC.md`, `tests/manifest.json`, `tests/writer/manifest.json`, and every
+fixture referenced by those manifests are normative. `CONFORMANCE.md` defines
+the normative adapter protocol used to present conformance results, but JSON
+transport in that protocol is not Nano Markup syntax. `grammar.ebnf`, examples,
+coverage indexes, and explanatory repository documents are informative. If an
+informative file conflicts with normative material, the normative material
+controls.
+
+A conforming data decoder MUST implement this specification, accept every
+valid conformance fixture, produce the specified data tree, and reject every
+invalid fixture with the specified error category. Exact diagnostic wording is
+implementation-defined.
 
 A conforming data writer MUST accept a Nano Markup document tree and emit a
 Nano Markup document that a conforming decoder reads as a data tree equivalent
@@ -18,12 +29,20 @@ properties are not part of the data model.
 A writer given a value outside the Nano Markup data model MUST report an error
 rather than silently alter or omit that value.
 
+Conformance is claimed separately for the **decoder** and **writer** profiles.
+An implementation may claim either profile or both, but a claim MUST identify
+the exact specification version and every claimed profile. For example:
+`Nano Markup 1.0.0-rc.1 decoder and writer`. Partial support within a claimed
+profile is not conforming. Passing the shared fixtures is required but does not
+replace compliance with normative behavior for inputs not enumerated by the
+finite corpus.
+
 An implementation MAY additionally provide a source-preserving document API.
 Such an API is outside data conformance and must keep presentation metadata
 separate from mapping keys, sequence items, and strings.
 
-The JSON protocol in `CONFORMANCE.md` is test infrastructure, not a Nano Markup
-serialization format and not part of the language data model.
+The JSON protocol in `CONFORMANCE.md` is conformance test infrastructure, not a
+Nano Markup serialization format and not part of the language data model.
 
 ## 2. Data model
 
@@ -38,6 +57,13 @@ A Nano Markup value is exactly one of:
 
 A Nano Markup document tree is any Nano Markup value. Its root MAY therefore be
 a String, Mapping, or Sequence.
+
+For this specification, a Unicode scalar value is an integer from U+0000
+through U+10FFFF other than the surrogate range U+D800 through U+DFFF.
+Assigned characters, unassigned scalar values, private-use characters, and
+noncharacters are treated alike unless excluded explicitly above. Nano Markup
+does not depend on Unicode normalization, character properties, or the set of
+characters assigned by a particular Unicode version.
 
 String and key comparison is code-point exact and performs no Unicode
 normalization or case folding. Two mappings are equivalent when they contain
@@ -454,6 +480,12 @@ the final byte is its source position. This ordering makes conformance
 deterministic; implementations may still provide additional diagnostics outside
 the conformance result.
 
+This rule selects which error is reported; it does not require a public API to
+expose the byte offset. Adapter protocol version 1 transports only the selected
+category, so earliest-position behavior is verified by implementation-native
+tests and review. A future protocol version may add a position field, but doing
+so must follow the protocol compatibility rules in `VERSIONING.md`.
+
 ## 12. JSON representation used by tests
 
 Expected-result files use JSON only as a language-neutral description of the
@@ -501,4 +533,17 @@ change parser configuration or invoke code merely by being parsed.
 Implementations MAY limit input bytes, line length, nesting depth, mapping or
 sequence size, and decoded string size to protect against resource exhaustion.
 Limits and the error reported when they are exceeded MUST be documented. A
-decoder must apply duplicate-key checks even when processing untrusted input.
+decoder MUST apply duplicate-key checks even when processing untrusted input.
+
+## 16. Normative references
+
+- **BCP 14**: [RFC 2119, *Key words for use in RFCs to Indicate Requirement
+  Levels*](https://www.rfc-editor.org/info/rfc2119), as updated by
+  [RFC 8174, *Ambiguity of Uppercase vs Lowercase in RFC 2119 Key
+  Words*](https://www.rfc-editor.org/info/rfc8174).
+- **UTF-8**: [RFC 3629, *UTF-8, a transformation format of ISO
+  10646*](https://www.rfc-editor.org/info/rfc3629).
+- **Unicode terminology**: [The Unicode Standard, Version
+  17.0.0](https://www.unicode.org/versions/Unicode17.0.0/). Nano Markup's
+  accepted scalar repertoire is defined explicitly in section 2 and is not
+  limited to assigned characters in that Unicode version.
