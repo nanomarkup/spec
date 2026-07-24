@@ -12,9 +12,13 @@ tag. `SPEC.md`, `tests/manifest.json`, `tests/writer/manifest.json`, and every
 fixture referenced by those manifests are normative. `CONFORMANCE.md` defines
 the normative adapter protocol used to present conformance results, but JSON
 transport in that protocol is not Nano Markup syntax. `grammar.ebnf`, examples,
-coverage indexes, and explanatory repository documents are informative. If an
-informative file conflicts with normative material, the normative material
-controls.
+coverage indexes, `SPEC.html`, and explanatory repository documents are
+informative. If an informative file conflicts with normative material, the
+normative material controls.
+
+Code examples and explanatory notes inside this document illustrate the
+normative rules. If an example conflicts with a normative requirement, the
+normative requirement controls.
 
 A conforming data decoder MUST implement this specification, accept every
 valid conformance fixture, produce the specified data tree, and reject every
@@ -88,6 +92,17 @@ Nano Markup does not infer nulls, booleans, numbers, dates, or any other scalar
 types. Applications MAY interpret strings using rules outside this
 specification.
 
+For example, every leaf below is a String, including `true` and `12`:
+
+```nano
+..
+    enabled true
+    age 12
+    labels:
+        student
+        cyclist
+```
+
 ## 3. Source text
 
 The conventional file extension for a Nano Markup source document is `.nano`.
@@ -137,6 +152,16 @@ of spaces.
 A child is indented exactly one level more than its parent header. A dedent ends
 the current container and returns to the matching earlier level.
 
+Here `child` is eight spaces from the left margin because it is inside
+`parent`; the dedented `sibling` returns to the root mapping:
+
+```nano
+..
+    parent..
+        child value
+    sibling value
+```
+
 ## 5. Keys
 
 A key matches this grammar:
@@ -147,6 +172,9 @@ A key matches this grammar:
 
 Keys are case-sensitive. Two equal keys MUST NOT occur in the same mapping.
 The same key MAY occur in different mappings.
+
+For example, `user_name`, `release-1`, and `Case` are valid and distinct keys.
+`1user` and `full name` are not valid keys.
 
 ## 6. Documents
 
@@ -175,6 +203,23 @@ quoted because their unquoted forms are structural syntax or a comment.
 The root markers follow the anonymous container and multiline markers already
 used in sequences. A root mapping or sequence with no child data lines is
 empty. Comments do not make it nonempty.
+
+These are three complete documents with different root types:
+
+```nano
+Hello from a String root
+```
+
+```nano
+:
+    red
+    green
+```
+
+```nano
+..
+    name Ariana
+```
 
 Only the exact tokens `..`, `:`, and `|` are recognized as root markers. For
 example, `colors:` and `name Ariana` at level zero are raw root strings, not
@@ -226,6 +271,21 @@ and `|` MUST be quoted because their unquoted forms are structural markers.
 Anonymous mapping and sequence items contain their immediately following lines
 indented exactly one further level. With no such data lines they are empty.
 
+Attached markers create structures, while the same markers after one separator
+space are ordinary string values:
+
+```nano
+..
+    child..
+    items:
+    description|
+        Multiple lines
+        of text
+    mapping_text ..
+    sequence_text :
+    pipe_text |
+```
+
 ## 8. Strings
 
 ### 8.1 Raw strings
@@ -245,7 +305,7 @@ The spellings that require quoting in a scalar position are summarized here:
 | Scalar value | Document root | Mapping value | Sequence item |
 | --- | --- | --- | --- |
 | empty string | `""` | bare key or `""` | `""` |
-| `|` | `"|"` | `|` or `"|"` | `"|"` |
+| `\|` | `"\|"` | `\|` or `"\|"` | `"\|"` |
 | `..` | `".."` | `..` or `".."` | `".."` |
 | `:` | `":"` | `:` or `":"` | `":"` |
 | begins with `#` | quoted | raw or quoted | quoted |
@@ -254,6 +314,15 @@ In the mapping column, `..` and `:` are values following the required key and
 separator; for example, `marker ..`. The forms `key..`, `key:`, and `key|`
 remain structural syntax. At the document root, `..`, `:`, and `|` are also
 structural and MUST be quoted when intended as strings.
+
+Raw mapping values may contain spaces and `#`; there is no inline-comment
+syntax:
+
+```nano
+..
+    title Nano Markup language
+    note # this complete remainder is string data
+```
 
 ### 8.2 Quoted strings
 
@@ -272,6 +341,16 @@ Other escapes, missing closing quotes, trailing text after the closing quote,
 unescaped TAB, CR, or LF, and Unicode scalar values excluded by section 2 are
 errors. Unicode text is written directly as UTF-8; `\u` escapes are not part of
 Nano Markup 1.0.
+
+Quoted strings represent otherwise ambiguous whitespace and escaped control
+characters:
+
+```nano
+..
+    padded "  spaces are preserved  "
+    lines "first\nsecond"
+    tab "left\tright"
+```
 
 ### 8.3 Multiline strings
 
@@ -298,6 +377,16 @@ Within a multiline block, mapping, sequence, quote, escape, and comment syntax
 has no special meaning. A nonblank line with less than the required content
 prefix ends the block and is parsed normally. If that line's indentation is not
 valid in the surrounding structure, parsing subsequently produces `E_INDENT`.
+
+For example, this value decodes to
+`"Lisova 20\nIndex 1111"` without an implicit final LF:
+
+```nano
+..
+    address|
+        Lisova 20
+        Index 1111
+```
 
 ## 9. Comments
 
@@ -504,6 +593,21 @@ expose the byte offset. Adapter protocol version 1 transports only the selected
 category, so earliest-position behavior is verified by implementation-native
 tests and review. A future protocol version may add a position field, but doing
 so must follow the protocol compatibility rules in `VERSIONING.md`.
+
+For example, this partial indentation is `E_INDENT`:
+
+```nano-invalid
+..
+   name Ariana
+```
+
+This repeated key is `E_DUPLICATE_KEY`:
+
+```nano-invalid
+..
+    name Ariana
+    name Mark
+```
 
 ## 12. JSON representation used by tests
 

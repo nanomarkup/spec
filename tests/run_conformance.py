@@ -31,6 +31,24 @@ def fixture_hashes() -> dict[Path, str]:
     return normative
 
 
+def inline_examples() -> list[str]:
+    examples: list[str] = []
+    content: list[str] | None = None
+    for line in (ROOT.parent / "SPEC.md").read_text(encoding="utf-8").splitlines():
+        if line == "```nano":
+            if content is not None:
+                raise SystemExit("SPEC.md contains nested Nano Markup code fences")
+            content = []
+        elif line == "```" and content is not None:
+            examples.append("\n".join(content))
+            content = None
+        elif content is not None:
+            content.append(line)
+    if content is not None:
+        raise SystemExit("SPEC.md contains an unterminated Nano Markup code fence")
+    return examples
+
+
 def unique_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
     result: dict[str, object] = {}
     for key, value in pairs:
@@ -93,6 +111,14 @@ def run(adapters: list[list[str]]) -> None:
             payload = invoke(adapter, "parse", str(examples_root / case["source"]))
             if payload != {"ok": True, "value": expected}:
                 raise SystemExit(f"example mismatch for {case['source']}: {payload}")
+
+        for index, source in enumerate(inline_examples(), start=1):
+            with tempfile.NamedTemporaryFile(suffix=".nano") as temporary:
+                temporary.write(source.encode("utf-8"))
+                temporary.flush()
+                payload = invoke(adapter, "parse", temporary.name)
+                if set(payload) != {"ok", "value"} or payload["ok"] is not True:
+                    raise SystemExit(f"inline example {index} failed: {payload}")
 
     writer_root = ROOT / "writer"
     writer_manifest = json.loads((writer_root / "manifest.json").read_text())

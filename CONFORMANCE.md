@@ -21,6 +21,10 @@ must not modify the shared fixtures to make its own tests pass.
 The specification repository ships a language-neutral runner and CI integrity
 checks but no production decoder. Independent implementations exercise the
 protocol by supplying their adapters to `tests/run_conformance.py`.
+The supplied runner also requires every `nano` fenced example in `SPEC.md` to
+decode successfully. Fences labeled `nano-invalid` are explanatory malformed
+examples and are excluded because their required categories remain covered by
+normative fixtures.
 
 ## Adapter invocation
 

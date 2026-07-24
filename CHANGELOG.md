@@ -4,6 +4,9 @@ All normative changes to Nano Markup are recorded here.
 
 ## 1.0.0-rc.1 — 2026-07-24
 
+- Added concise inline examples throughout the normative Markdown and a
+  deterministic, responsive `SPEC.html` browser rendering. `SPEC.md` remains
+  the normative source.
 - Changed mapping multiline headers from `key |` to `key|`, making `|`
   consistent with the attached `..` and `:` structural markers. Consequently,
   `key |` now represents the ordinary string `|`.
@@ -13,6 +16,25 @@ All normative changes to Nano Markup are recorded here.
   version-independent definition of Unicode scalar values.
 - Clarified that protocol version 1 transports error categories but not source
   positions, leaving earliest-position verification to native tests and review.
+- Added byte-sensitive fixture checksums, informative examples, release and
+  errata procedures, security reporting guidance, and tag-release automation.
+- Defined document values as finite acyclic trees, clarified that only a
+  leading UTF-8 signature is forbidden, and made malformed mapping-line
+  classification deterministic.
+- Hardened manifest validation and adapter framing, documented the five-second
+  timeout, and extended mutation detection to informative examples.
+- Added interior-U+FEFF, encoding-over-tab, mapping-suffix, multiline-marker,
+  empty-root writer, and empty-value fixtures, bringing the shared corpus to
+  112 cases.
+- Added four practical JSON/Nano example pairs covering project configuration,
+  record sequences, string spellings, and empty values.
+
+## 0.6-draft — 2026-07-24
+
+This draft existed through commit `c74d806`. It was never tagged or released
+and was superseded by `1.0.0-rc.1`; its work remains part of the release
+candidate.
+
 - Clarified that ASCII-space-only physical lines remain blank inside multiline
   blocks and require quoted writer output when their spaces are string data.
 - Expanded writer coverage for root strings, space-only logical lines, Unicode
@@ -24,20 +46,8 @@ All normative changes to Nano Markup are recorded here.
   followed by siblings at different nesting depths.
 - Added a normative requirement traceability index and documented native
   writer checks that cannot be represented by the JSON protocol.
-- Added byte-sensitive fixture checksums, informative examples, release and
-  errata procedures, security reporting guidance, and tag-release automation.
 - Updated the conformance documentation to match the shipped runner and writer
   protocol.
-- Defined document values as finite acyclic trees, clarified that only a
-  leading UTF-8 signature is forbidden, and made malformed mapping-line
-  classification deterministic.
-- Hardened manifest validation and adapter framing, documented the five-second
-  timeout, and extended mutation detection to informative examples.
-- Added interior-U+FEFF, encoding-over-tab, mapping-suffix, multiline-marker,
-  empty-root writer, and empty-value fixtures, bringing the shared corpus to
-  112 cases.
-- Added four practical JSON/Nano example pairs covering project configuration,
-  record sequences, string spellings, and empty values.
 
 ## 0.5-draft — 2026-07-23
 

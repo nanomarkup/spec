@@ -18,6 +18,8 @@ with `..`, or an explicit Sequence root marked with `:`.
 ## Repository contents
 
 - [SPEC.md](SPEC.md) is the normative language specification.
+- [SPEC.html](SPEC.html) is a generated, informative browser rendering of
+  `SPEC.md`; it is checked for synchronization in CI.
 - [grammar.ebnf](grammar.ebnf) summarizes the lexical grammar. Indentation is
   defined normatively in `SPEC.md`.
 - [tests](tests) contains valid and invalid conformance fixtures.
@@ -50,6 +52,13 @@ no implementation-specific build system. Each language implementation belongs
 in its own repository and consumes a pinned version of this conformance suite.
 Implementations are interoperability evidence, not normative dependencies of
 the specification.
+
+To regenerate the HTML rendering:
+
+```console
+python -m pip install -r requirements-docs.txt
+python tools/render_spec.py
+```
 
 ## License
 

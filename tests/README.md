@@ -37,4 +37,5 @@ byte integrity, and informative-example completeness without using an
 implementation. `validate_links.py` checks repository-local Markdown links.
 `run_conformance.py 'ADAPTER COMMAND'...` runs every decoder, writer, and
 example case and cross-decodes every writer's output with every supplied
-adapter.
+adapter. It also requires every valid `nano` fenced example in `SPEC.md` to
+decode successfully; intentionally malformed examples use `nano-invalid`.
